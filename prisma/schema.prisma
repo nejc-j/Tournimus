@@ -1,0 +1,67 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Tournament {
+  id                String       @default(cuid()) @id
+  name              String       // Ime turnirja
+  representative    String       // Zastopnik
+  logo              String?      // Logotip
+  numberOfParticipants Int       // Number of participants
+  mode              String       // Tournament mode
+  participants      Participant[] // Vnos participantov (mogoč združit?)
+  locationId        String?
+  location          Location?    @relation(fields: [locationId], references: [id])
+  eventTime         DateTime     // Čas dogodka
+  numberOfCourts    Int          // Število igrišč
+  startTime         DateTime     // Začetek turnirja
+  matchDuration     Int          // Dolžina ene tekme (in minutes)
+  breakDuration     Int          // Kok je pavza (in minutes)
+  scoringMethod     String       // Način točkovanja(kaj je prioriteta)
+  organizerId       String
+  organizer         User         @relation(fields: [organizerId], references: [id])
+  createdAt         DateTime     @default(now()) @map(name: "created_at")
+  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+}
+
+model Location {
+  id                String       @default(cuid()) @id
+  name              String       // Name of the location
+  address           String       // Address of the location
+  tournaments       Tournament[] // Relation to tournaments
+  createdAt         DateTime     @default(now()) @map(name: "created_at")
+  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+}
+
+model Participant {
+  id                String       @default(cuid()) @id
+  name              String       // Name of the participant (individual or team)
+  type              ParticipantType // Type of participant (individual or team)
+  tournamentId      String
+  tournament        Tournament   @relation(fields: [tournamentId], references: [id])
+  createdAt         DateTime     @default(now()) @map(name: "created_at")
+  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+}
+
+enum ParticipantType {
+  INDIVIDUAL
+  TEAM
+}
+
+model User {
+  id                String       @default(cuid()) @id
+  name              String?
+  email             String?      @unique
+  createdAt         DateTime     @default(now()) @map(name: "created_at")
+  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+  tournaments       Tournament[] // Tournaments organized by the user
+  @@map(name: "users")
+}
