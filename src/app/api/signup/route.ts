@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
-import { prisma } from '../../../../../lib/prisma'; // Ensure the correct path
+import { prisma } from '../../../../lib/prisma'; // Ensure the correct path
 
 export async function POST(request: Request) {
   try {

@@ -1,12 +1,14 @@
 'use client';
 
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function SignIn() {
-  const { data: session, status } = useSession();
+  const { status } = useSession(); // Removed 'session' variable
   const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -17,25 +19,21 @@ export default function SignIn() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const target = e.target as typeof e.target & {
-      username: { value: string };
-      password: { value: string };
-    };
-
-    const username = target.username.value;
-    const password = target.password.value;
+    setError(null);
 
     const result = await signIn('credentials', {
       redirect: false,
-      username,
+      email,
       password,
     });
 
-    if (!result?.error) {
-      router.push('/dashboard');
+    if (result?.error) {
+      setError(result.error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Signin error:', result.error);
+      }
     } else {
-      setError('Invalid username or password');
-      console.error(result.error);
+      router.push('/dashboard');
     }
   };
 
@@ -43,23 +41,25 @@ export default function SignIn() {
 
   return (
     <div>
-      {!session ? (
-        <form onSubmit={handleSubmit}>
-          <input name="username" type="text" placeholder="Username" required />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            required
-          />
-          <button type="submit">Sign in</button>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-        </form>
-      ) : (
-        <button type="button" onClick={() => signOut()}>
-          Sign out
-        </button>
-      )}
+      <h1>Sign In</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Sign In</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+      </form>
     </div>
   );
 }

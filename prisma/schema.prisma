@@ -59,6 +59,7 @@ enum ParticipantType {
 model User {
   id                String       @default(cuid()) @id
   name              String?
+  password          String
   email             String?      @unique
   createdAt         DateTime     @default(now()) @map(name: "created_at")
   updatedAt         DateTime     @updatedAt @map(name: "updated_at")
