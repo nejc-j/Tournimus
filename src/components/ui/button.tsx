@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable @typescript-eslint/indent */
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';

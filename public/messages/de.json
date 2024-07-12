@@ -1,4 +1,7 @@
 {
+  "Header": {
+    "login_registration": "Anmeldung / Registrierung"
+  },
   "Home": {
     "welcome_message": "Einfaches Verwalten und Überwachen von Turnieren",
     "welcome_description": "Willkommen bei TOURNIMUS! Organisieren Sie Ihre Turniere einfach und schnell. Zuschauer, überprüfen Sie Zeitpläne, Standorte und alle Details zu bevorstehenden Spielen.",

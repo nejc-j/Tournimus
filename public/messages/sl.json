@@ -1,4 +1,7 @@
 {
+  "Header": {
+    "login_registration": "Prijava / Registracija"
+  },
   "Home": {
     "welcome_message": "Enostavno upravljanje in spremljanje turnirjev",
     "welcome_description": "Dobrodošli v TOURNIMUS! Organizirajte svoje turnirje enostavno in hitro. Gledalci, preverite urnike, lokacije in vse podrobnosti o prihajajočih tekmah.",
