@@ -20,8 +20,12 @@ const handler = NextAuth({
           where: { email: credentials.email },
         });
 
-        if (!user || !user.password) {
+        if (!user) {
           return null;
+        }
+
+        if (!user.verified) {
+          throw new Error('Email not verified');
         }
 
         const isValidPassword = await compare(

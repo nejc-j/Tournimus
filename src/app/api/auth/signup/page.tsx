@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
   const router = useRouter();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -13,20 +13,29 @@ export default function SignUp() {
     e.preventDefault();
     setError(null);
 
-    const response = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const response = await fetch('/api/signup', {
+        // Updated URL
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await response.json();
+      const rawData = await response.text();
+      console.log('Raw response:', rawData);
 
-    if (response.ok) {
-      router.push('/auth/signin');
-    } else {
-      setError(data.message || 'Something went wrong');
+      const data = JSON.parse(rawData);
+
+      if (response.ok) {
+        router.push('/auth/signin');
+      } else {
+        setError(data.message || 'Something went wrong');
+      }
+    } catch (err) {
+      console.error('Signup error:', err);
+      setError('Something went wrong');
     }
   };
 
@@ -35,10 +44,10 @@ export default function SignUp() {
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <input

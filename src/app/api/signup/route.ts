@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
-import { prisma } from '../../../../lib/prisma'; // Ensure the correct path
+import jwt from 'jsonwebtoken';
+import { prisma } from '../../../../lib/prisma';
+import { sendVerificationEmail } from '../../../../lib/email';
 
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    // Log the received request body
     console.log('Received signup request:', { email, password });
 
-    // Check if the user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (existingUser) {
@@ -20,20 +20,29 @@ export async function POST(request: Request) {
       );
     }
 
-    // Hash the password
     const hashedPassword = await hash(password, 10);
 
-    // Save the new user to the database
     const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
+        verified: false,
       },
     });
 
-    console.log('User created:', user);
+    const token = jwt.sign({ email }, process.env.JWT_SECRET!, {
+      expiresIn: '1h',
+    });
 
-    return NextResponse.json(user);
+    console.log('Generated token:', token);
+
+    await sendVerificationEmail(email, token);
+
+    console.log('User created and verification email sent:', user);
+
+    return NextResponse.json({
+      message: 'Verification email sent. Please check your inbox.',
+    });
   } catch (error) {
     console.error('Error in signup route:', error);
     return NextResponse.json(
