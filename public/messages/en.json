@@ -1,0 +1,10 @@
+{
+  "Header": {
+    "login_registration": "Login / Registration"
+  },
+  "Home": {
+    "welcome_message": "Easily manage and monitor tournaments",
+    "welcome_description": "Welcome to TOURNIMUS! Easily organize your tournaments and quickly. Spectators, check schedules, locations, and all details about upcoming matches.",
+    "button_create_tournament": "Create a new tournament"
+  }
+}
