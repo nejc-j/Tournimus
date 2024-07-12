@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* globals.css */
+
+html,
+body {
+  color: white;
+}
+@layer utilities {
+  .icon-transition {
+    @apply transition-transform duration-200 ease-in-out;
+  }
+  .icon-open {
+    transform: rotate(180deg);
+  }
+}
