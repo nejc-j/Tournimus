@@ -41,7 +41,7 @@ export default function SignUp() {
   };
 
   return (
-    <div>
+    <div className="mt-20">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <input
