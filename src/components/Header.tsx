@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+
 import { Button } from './ui/button';
+import LanguageSwitcher from './LanguageSwitcher';
 
 function Header() {
   return (
@@ -15,6 +16,7 @@ function Header() {
         <Button className="ml-auto" variant="outline">
           Prijava / Registracija
         </Button>
+        <LanguageSwitcher />
       </div>
     </div>
   );
