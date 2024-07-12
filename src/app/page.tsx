@@ -1,4 +1,6 @@
+import React from 'react';
 import Image from 'next/image';
+import { Button } from '../components/ui/button';
 
 export default function Home() {
   return (
@@ -13,6 +15,23 @@ export default function Home() {
           quality={100}
           priority
         />
+        <div className="absolute inset-0 flex items-center justify-center flex-col gap-4">
+          <div className="max-w-6xl mx-auto text-center p-4 flex flex-col gap-10">
+            <h1 className="text-white text-3xl md:text-5xl font-semibold">
+              Enostavno upravljanje in spremljanje turnirjev
+            </h1>
+            <p>
+              Dobrodošli v TOURNIMUS! Organizirajte svoje turnirje enostavno in
+              hitro. Gledalci, preverite urnike, lokacije in vse podrobnosti o
+              prihajajočih tekmah.
+            </p>
+          </div>
+          <Button>Ustvari nov turnir</Button>
+        </div>
+      </div>
+      {/* Page content container with max-width */}
+      <div className="max-w-6xl mx-auto flex-grow p-4">
+        {/* Your page content goes here */}
       </div>
     </main>
   );
