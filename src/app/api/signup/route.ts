@@ -1,19 +1,32 @@
 import { NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { randomBytes } from 'crypto';
+import nodemailer from 'nodemailer';
 import { prisma } from '../../../../lib/prisma';
-import { sendVerificationEmail } from '../../../../lib/email';
+
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    console.log('Received signup request:', { email, password });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Received signup request:', { email, password });
+    }
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (existingUser) {
-      console.log('User already exists:', email);
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('User already exists:', email);
+      }
       return NextResponse.json(
         { message: 'User already exists' },
         { status: 400 },
@@ -21,30 +34,36 @@ export async function POST(request: Request) {
     }
 
     const hashedPassword = await hash(password, 10);
+    const verificationToken = randomBytes(32).toString('hex');
 
     const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
-        verified: false,
+        verificationToken,
       },
     });
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET!, {
-      expiresIn: '1h',
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('User created:', user);
+    }
+
+    const verificationLink = `${process.env.NEXTAUTH_URL}/api/verify?token=${verificationToken}`;
+
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: 'Verify your email',
+      html: `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`,
     });
-
-    console.log('Generated token:', token);
-
-    await sendVerificationEmail(email, token);
-
-    console.log('User created and verification email sent:', user);
 
     return NextResponse.json({
-      message: 'Verification email sent. Please check your inbox.',
+      message: 'User created. Please verify your email.',
     });
   } catch (error) {
-    console.error('Error in signup route:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Error in signup route:', error);
+    }
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 },

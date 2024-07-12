@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
-import AuthButton from './AuthButton.server';
+import AuthButton from '../AuthButton.server';
 
-export default async function Home() {
+export default async function Login() {
   const session = await auth();
   return (
     <main>
