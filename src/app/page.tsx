@@ -27,10 +27,6 @@ export default function Home() {
           <Button>{t('button_create_tournament')}</Button>
         </div>
       </div>
-      {/* Page content container with max-width */}
-      <div className="max-w-6xl mx-auto flex-grow p-4">
-        {/* Your page content goes here */}
-      </div>
     </main>
   );
 }
