@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
-
+import Image from 'next/image';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import Image from 'next/image';
 import { Button } from './ui/button';
 
 import { getUserLocale, setUserLocale } from '../services/locale';
