@@ -13,7 +13,7 @@ function TournamentCard({
   image,
 }: TournamentCardProps) {
   return (
-    <div className="flex border rounded-lg shadow-lg p-3 m-3 bg-white w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-md">
+    <div className="flex border rounded-lg shadow-lg p-3 bg-white w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-md">
       <div className="flex-grow">
         <h2 className="text-base sm:text-lg font-semibold mt-1.5 mb-3 text-primary overflow-hidden text-ellipsis">
           {name}

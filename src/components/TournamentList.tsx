@@ -6,23 +6,25 @@ interface TournamentListProps {
   tournaments?: Tournament[];
 }
 
-function TournamentList({ tournaments = [] }: TournamentListProps) {
-  if (tournaments.length === 0) {
-    return <p>No tournaments available</p>;
-  }
-
+function TournamentList({ tournaments }: TournamentListProps) {
   return (
-    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      {tournaments.map((tournament) => (
-        <TournamentCard
-          key={tournament.name}
-          name={tournament.name}
-          date={tournament.date}
-          time={tournament.time}
-          location={tournament.location}
-          image={tournament.image}
-        />
-      ))}
+    <div>
+      {tournaments && tournaments.length === 0 ? (
+        <p className="text-left text-gray-500">No tournaments found</p>
+      ) : (
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {tournaments?.map((tournament) => (
+            <TournamentCard
+              key={tournament.name}
+              name={tournament.name}
+              date={tournament.date}
+              time={tournament.time}
+              location={tournament.location}
+              image={tournament.image}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -4,17 +4,30 @@ import { getTranslations } from 'next-intl/server';
 import TournamentList from '../components/TournamentList';
 import { Button } from '../components/ui/button';
 import { Tournament } from '../types';
+import SearchBar from '../components/ui/searchbar';
 
-async function getTournaments(): Promise<Tournament[]> {
+async function getTournaments(searchTerm?: string): Promise<Tournament[]> {
   const res = await fetch('http://localhost:3000/tournaments.json', {
-    cache: 'force-cache',
+    cache: 'no-store',
   });
-  return res.json();
+  const allTournaments = await res.json();
+
+  if (searchTerm) {
+    return allTournaments.filter((tournament: Tournament) =>
+      tournament.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }
+  return allTournaments;
 }
 
-async function Home() {
+interface HomeProps {
+  searchParams: { search?: string };
+}
+
+async function Home({ searchParams }: HomeProps) {
   const t = await getTranslations('Home');
-  const tournaments = await getTournaments();
+  const searchTerm = searchParams.search || '';
+  const tournaments = await getTournaments(searchTerm);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-0 m-0">
@@ -37,7 +50,19 @@ async function Home() {
           <Button>{t('button_create_tournament')}</Button>
         </div>
       </div>
-      <div className="max-w-6xl mx-auto flex-grow p-4">
+      <div className="w-full max-w-6xl mx-auto flex-grow p-4">
+        <div className="text-left">
+          <h2 className="text-white text-3xl font-semibold mb-4 italic">
+            TRENUTNI TURNIRJI
+          </h2>
+          <SearchBar initialSearchTerm={searchTerm} />
+          <div className="inline-block">
+            <h3 className="text-tertiary text-xl font-semibold mb-1">
+              PRIHAJAJOČI
+            </h3>
+            <div className="border-b-4 border-tertiary w-full rounded-full mb-4" />
+          </div>
+        </div>
         <TournamentList tournaments={tournaments} />
       </div>
     </main>
