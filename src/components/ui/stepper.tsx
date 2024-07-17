@@ -480,8 +480,8 @@ type VerticalStepProps = StepSharedProps & {
 
 const verticalStepVariants = cva(
   [
-    'flex flex-col relative transition-all duration-200',
-    'data-[completed=true]:[&:not(:last-child)]:after:bg-primary',
+    'flex flex-col relative transition-all duration-200 ',
+    'data-[completed=true]:[&:not(:last-child)]:after:bg-secondary',
     'data-[invalid=true]:[&:not(:last-child)]:after:bg-destructive',
   ],
   {
@@ -489,12 +489,12 @@ const verticalStepVariants = cva(
       variant: {
         circle: cn(
           '[&:not(:last-child)]:pb-[var(--step-gap)] [&:not(:last-child)]:gap-[var(--step-gap)]',
-          "[&:not(:last-child)]:after:content-[''] [&:not(:last-child)]:after:w-[2px] [&:not(:last-child)]:after:bg-border",
+          "[&:not(:last-child)]:after:content-[''] [&:not(:last-child)]:after:w-[2px] [&:not(:last-child)]:after:bg-white",
           '[&:not(:last-child)]:after:inset-x-[calc(var(--step-icon-size)/2)]',
           '[&:not(:last-child)]:after:absolute',
           '[&:not(:last-child)]:after:top-[calc(var(--step-icon-size)+var(--step-gap))]',
           '[&:not(:last-child)]:after:bottom-[var(--step-gap)]',
-          '[&:not(:last-child)]:after:transition-all [&:not(:last-child)]:after:duration-200',
+          '[&:not(:last-child)]:after:transition-all  [&:not(:last-child)]:after:duration-200 ',
         ),
         line: 'flex-1 border-t-0 mb-4',
       },
@@ -609,7 +609,7 @@ const VerticalStep = React.forwardRef<HTMLDivElement, VerticalStepProps>(
             'stepper__vertical-step-container',
             'flex items-center',
             variant === 'line' &&
-              'border-s-[3px] data-[active=true]:border-primary py-2 ps-3',
+              'border-s-[3px] data-[active=true]:border-secondary py-2 ps-3',
             styles?.['vertical-step-container'],
           )}
         >
@@ -701,15 +701,15 @@ const HorizontalStep = React.forwardRef<HTMLDivElement, StepSharedProps>(
           'flex items-center relative transition-all duration-200',
           '[&:not(:last-child)]:flex-1',
           '[&:not(:last-child)]:after:transition-all [&:not(:last-child)]:after:duration-200',
-          "[&:not(:last-child)]:after:content-[''] [&:not(:last-child)]:after:h-[2px] [&:not(:last-child)]:after:bg-border",
-          'data-[completed=true]:[&:not(:last-child)]:after:bg-primary',
+          "[&:not(:last-child)]:after:content-[''] [&:not(:last-child)]:after:h-[2px] [&:not(:last-child)]:after:bg-white",
+          'data-[completed=true]:[&:not(:last-child)]:after:bg-secondary',
           'data-[invalid=true]:[&:not(:last-child)]:after:bg-destructive',
           variant === 'circle-alt' &&
             'justify-start flex-col flex-1 [&:not(:last-child)]:after:relative [&:not(:last-child)]:after:order-[-1] [&:not(:last-child)]:after:start-[50%] [&:not(:last-child)]:after:end-[50%] [&:not(:last-child)]:after:top-[calc(var(--step-icon-size)/2)] [&:not(:last-child)]:after:w-[calc((100%-var(--step-icon-size))-(var(--step-gap)))]',
           variant === 'circle' &&
             '[&:not(:last-child)]:after:flex-1 [&:not(:last-child)]:after:ms-[var(--step-gap)] [&:not(:last-child)]:after:me-[var(--step-gap)]',
           variant === 'line' &&
-            'flex-col flex-1 border-t-[3px] data-[active=true]:border-primary',
+            'flex-col flex-1 border-t-[3px] data-[active=true]:border-secondary',
           styles?.['horizontal-step'],
         )}
         data-optional={steps[index || 0]?.optional}
@@ -796,7 +796,7 @@ function StepButtonContainer({
         'w-[var(--step-icon-size)] h-[var(--step-icon-size)]',
         'border-2 flex rounded-full justify-center items-center',
         'data-[clickable=true]:pointer-events-auto',
-        'data-[active=true]:bg-primary data-[active=true]:border-primary data-[active=true]:text-primary-foreground',
+        'data-[active=true]:bg-primary data-[active=true]:border-secondary data-[active=true]:text-primary-foreground',
         'data-[current=true]:border-primary data-[current=true]:bg-secondary',
         'data-[invalid=true]:bg-destructive data-[invalid=true]:border-destructive data-[invalid=true]:text-destructive-foreground',
         styles?.['step-button-container'],

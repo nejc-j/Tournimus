@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 'use client';
 
 import React from 'react';
@@ -8,23 +10,24 @@ import {
   type StepItem,
 } from '@/components/ui/stepper';
 import { Button } from '../../components/ui/button';
+import { GeneralInfoForm } from '../../components/forms/GeneralInfoForm';
+import ParticipantsForm from '../../components/forms/ParticipantsForm';
+import { LocationTimeForm } from '../../components/forms/LocationTimeForm';
 
 const steps = [
-  { label: 'Step 1' },
-  { label: 'Step 2' },
-  { label: 'Step 3' },
+  { label: 'Splošne informacije' },
+  { label: 'Udeleženci' },
+  { label: 'Lokacija, Čas, Dodatne Nastavitve' },
 ] satisfies StepItem[];
 
 export default function StepperDemo() {
   return (
-    <div className="flex w-full flex-col gap-4 mt-20">
-      <Stepper initialStep={0} steps={steps}>
+    <div className="flex w-full  gap-4 mt-20 max-w-6xl mx-auto p-4 flex-col ">
+      <Stepper initialStep={0} steps={steps} className="ps-0">
         {steps.map(({ label }, index) => {
           return (
             <Step key={label} label={label}>
-              <div className="h-40 flex items-center justify-center my-4 border bg-secondary text-primary rounded-md">
-                <h1 className="text-xl">Step {index + 1}</h1>
-              </div>
+              <StepContent step={index} />
             </Step>
           );
         })}
@@ -34,7 +37,20 @@ export default function StepperDemo() {
   );
 }
 
-const Footer = () => {
+function StepContent({ step }) {
+  switch (step) {
+    case 0:
+      return <GeneralInfoForm />;
+    case 1:
+      return <ParticipantsForm />;
+    case 2:
+      return <LocationTimeForm />;
+    default:
+      return null;
+  }
+}
+
+function Footer() {
   const {
     nextStep,
     prevStep,
@@ -64,14 +80,18 @@ const Footer = () => {
               size="sm"
               variant="secondary"
             >
-              Prev
+              Prejšnji korak
             </Button>
             <Button size="sm" onClick={nextStep}>
-              {isLastStep ? 'Finish' : isOptionalStep ? 'Skip' : 'Next'}
+              {isLastStep
+                ? 'Finish'
+                : isOptionalStep
+                  ? 'Prejšnji korak'
+                  : 'Naslednji korak'}
             </Button>
           </>
         )}
       </div>
     </>
   );
-};
+}

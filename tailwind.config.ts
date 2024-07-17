@@ -51,6 +51,7 @@ const config = {
         primary: '#05132A',
         secondary: '#FFB800',
         tertiary: '#0094FF',
+        succes: '#00a959',
       },
     },
   },

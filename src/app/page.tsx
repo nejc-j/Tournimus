@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { Button } from '../components/ui/button';
 
 export default function Home() {
@@ -24,7 +25,9 @@ export default function Home() {
             </h1>
             <p>{t('welcome_description')}</p>
           </div>
-          <Button>{t('button_create_tournament')}</Button>
+          <Link href="/create-tournament">
+            <Button>{t('button_create_tournament')}</Button>
+          </Link>
         </div>
       </div>
     </main>
