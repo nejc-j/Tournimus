@@ -1,13 +1,6 @@
 import React from 'react';
 import TournamentCard from './TournamentCard';
-
-interface Tournament {
-  name: string;
-  date: string;
-  time: string;
-  location: string;
-  image?: string;
-}
+import { Tournament } from '../types';
 
 interface TournamentListProps {
   tournaments?: Tournament[];

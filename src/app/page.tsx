@@ -1,28 +1,26 @@
 import React from 'react';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import TournamentList from '../components/TournamentList';
 import { Button } from '../components/ui/button';
+import { Tournament } from '../types';
 
-interface Tournament {
-  name: string;
-  date: string;
-  time: string;
-  location: string;
-  image?: string;
+async function getTournaments(): Promise<Tournament[]> {
+  const res = await fetch('http://localhost:3000/tournaments.json', {
+    cache: 'force-cache',
+  });
+  return res.json();
 }
 
-interface HomeProps {
-  tournaments: Tournament[];
-}
+async function Home() {
+  const t = await getTranslations('Home');
+  const tournaments = await getTournaments();
 
-function Home({ tournaments }: HomeProps) {
-  const t = useTranslations('Home');
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-0 m-0">
       <div className="relative w-full h-[300px] md:h-[500px] top-0 left-0">
         <Image
-          src="/background-stadium.png" // Replace with your image path
+          src="/background-stadium.png"
           alt="Background Image"
           layout="fill"
           objectFit="cover"
@@ -45,15 +43,5 @@ function Home({ tournaments }: HomeProps) {
     </main>
   );
 }
-
-Home.getInitialProps = async () => {
-  try {
-    const res = await fetch('http://localhost:3000/tournaments.json');
-    const tournaments: Tournament[] = await res.json();
-    return { tournaments };
-  } catch (error) {
-    return { tournaments: [] };
-  }
-};
 
 export default Home;

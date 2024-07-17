@@ -1,14 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { Calendar, Clock4, MapPin } from 'lucide-react';
+import { Tournament } from '../types';
 
-interface TournamentCardProps {
-  name: string;
-  date: string;
-  time: string;
-  location: string;
-  image?: string;
-}
+interface TournamentCardProps extends Tournament {}
 
 function TournamentCard({
   name,
@@ -20,19 +15,19 @@ function TournamentCard({
   return (
     <div className="flex border rounded-lg shadow-lg p-3 m-3 bg-white w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-md">
       <div className="flex-grow">
-        <h2 className="text-base sm:text-lg font-semibold mt-1.5 mb-3 text-black overflow-hidden text-ellipsis">
+        <h2 className="text-base sm:text-lg font-semibold mt-1.5 mb-3 text-primary overflow-hidden text-ellipsis">
           {name}
         </h2>
-        <div className="flex items-center text-black mb-0.5">
-          <Calendar color="#0094FF" size="16" className="mr-2" />
+        <div className="flex items-center text-primary mb-0.5">
+          <Calendar className="text-tertiary mr-2" size="16" />
           <p className="text-xs sm:text-sm">{date}</p>
         </div>
-        <div className="flex items-center text-black mb-3">
-          <Clock4 color="#0094FF" size="16" className="mr-2" />
+        <div className="flex items-center text-primary mb-3">
+          <Clock4 className="text-tertiary mr-2" size="16" />
           <p className="text-xs sm:text-sm">{time}</p>
         </div>
-        <div className="flex items-start text-black">
-          <MapPin color="#0094FF" size="16" className="mr-2 flex-none" />
+        <div className="flex items-start text-primary">
+          <MapPin className="text-tertiary mr-2 flex-none" size="16" />
           <p className="font-semibold text-xs sm:text-sm">{location}</p>
         </div>
       </div>
