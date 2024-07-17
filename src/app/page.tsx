@@ -1,13 +1,25 @@
 import React from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import TournamentList from '../components/TournamentList';
 import { Button } from '../components/ui/button';
 
-export default function Home() {
+interface Tournament {
+  name: string;
+  date: string;
+  time: string;
+  location: string;
+  image?: string;
+}
+
+interface HomeProps {
+  tournaments: Tournament[];
+}
+
+function Home({ tournaments }: HomeProps) {
   const t = useTranslations('Home');
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-0 m-0">
-      {/* Background image container */}
       <div className="relative w-full h-[300px] md:h-[500px] top-0 left-0">
         <Image
           src="/background-stadium.png" // Replace with your image path
@@ -27,10 +39,21 @@ export default function Home() {
           <Button>{t('button_create_tournament')}</Button>
         </div>
       </div>
-      {/* Page content container with max-width */}
       <div className="max-w-6xl mx-auto flex-grow p-4">
-        {/* Your page content goes here */}
+        <TournamentList tournaments={tournaments} />
       </div>
     </main>
   );
 }
+
+Home.getInitialProps = async () => {
+  try {
+    const res = await fetch('http://localhost:3000/tournaments.json');
+    const tournaments: Tournament[] = await res.json();
+    return { tournaments };
+  } catch (error) {
+    return { tournaments: [] };
+  }
+};
+
+export default Home;
