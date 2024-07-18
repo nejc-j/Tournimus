@@ -15,7 +15,8 @@ function TournamentList({ tournaments }: TournamentListProps) {
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {tournaments?.map((tournament) => (
             <TournamentCard
-              key={tournament.name}
+              key={tournament.id}
+              id={tournament.id}
               name={tournament.name}
               date={tournament.date}
               time={tournament.time}
