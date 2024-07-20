@@ -1,17 +1,41 @@
 import React from 'react';
 import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
+import TournamentList from '../components/TournamentList';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Button } from '../components/ui/button';
+import { Tournament } from '../types';
+import SearchBar from '../components/ui/searchbar';
 
-export default function Home() {
-  const t = useTranslations('Home');
+async function getTournaments(searchTerm?: string): Promise<Tournament[]> {
+  const res = await fetch('http://localhost:3000/tournaments.json', {
+    cache: 'no-store',
+  });
+  const allTournaments = await res.json();
+
+  if (searchTerm) {
+    return allTournaments.filter((tournament: Tournament) =>
+      tournament.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }
+  return allTournaments;
+}
+
+interface HomeProps {
+  searchParams: { search?: string };
+}
+
+async function Home({ searchParams }: HomeProps) {
+  const t = await getTranslations('Home');
+  const searchTerm = searchParams.search || '';
+  const tournaments = await getTournaments(searchTerm);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-0 m-0">
-      {/* Background image container */}
       <div className="relative w-full h-[300px] md:h-[500px] top-0 left-0">
         <Image
-          src="/background-stadium.png" // Replace with your image path
+          src="/background-stadium.png"
           alt="Background Image"
           layout="fill"
           objectFit="cover"
@@ -30,6 +54,23 @@ export default function Home() {
           </Link>
         </div>
       </div>
+      <div className="w-full max-w-6xl mx-auto flex-grow p-4">
+        <div className="text-left">
+          <h2 className="text-white text-3xl font-semibold mt-4 mb-4 italic">
+            {t('current_tournaments')}
+          </h2>
+          <SearchBar initialSearchTerm={searchTerm} />
+          <div className="inline-block">
+            <h3 className="text-tertiary text-xl font-semibold mb-1">
+              {t('upcoming')}
+            </h3>
+            <div className="border-b-4 border-tertiary w-full rounded-full mb-4" />
+          </div>
+        </div>
+        <TournamentList tournaments={tournaments} />
+      </div>
     </main>
   );
 }
+
+export default Home;

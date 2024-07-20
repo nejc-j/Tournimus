@@ -5,6 +5,12 @@
   "Home": {
     "welcome_message": "Enostavno upravljanje in spremljanje turnirjev",
     "welcome_description": "Dobrodošli v TOURNIMUS! Organizirajte svoje turnirje enostavno in hitro. Gledalci, preverite urnike, lokacije in vse podrobnosti o prihajajočih tekmah.",
-    "button_create_tournament": "Ustvari nov turnir"
+    "button_create_tournament": "Ustvari nov turnir",
+    "current_tournaments": "TRENUTNI TURNIRJI",
+    "tournament_search": "Išči turnirje...",
+    "upcoming": "PRIHAJAJOČI"
+  },
+  "SeacrhBar": {
+    "tournament_search": "Išči turnirje..."
   }
 }
