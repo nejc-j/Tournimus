@@ -2,6 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import TournamentList from '../components/TournamentList';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { Button } from '../components/ui/button';
 import { Tournament } from '../types';
 import SearchBar from '../components/ui/searchbar';
@@ -47,7 +49,9 @@ async function Home({ searchParams }: HomeProps) {
             </h1>
             <p>{t('welcome_description')}</p>
           </div>
-          <Button>{t('button_create_tournament')}</Button>
+          <Link href="/create-tournament">
+            <Button>{t('button_create_tournament')}</Button>
+          </Link>
         </div>
       </div>
       <div className="w-full max-w-6xl mx-auto flex-grow p-4">

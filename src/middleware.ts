@@ -5,6 +5,7 @@ export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
 
+// eslint-disable-next-line consistent-return
 export default auth((req) => {
   const reqUrl = new URL(req.url);
   if (!req.auth && reqUrl?.pathname === '/tournament') {

@@ -57,6 +57,7 @@ const config = {
         quaternary: '#051127',
         quinary: '#0162D4',
         senary: '#0151A8',
+        succes: '#00a959',
       },
     },
   },

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import NextAuth, { User, NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
@@ -52,6 +53,21 @@ const authOptions: NextAuthConfig = {
   ],
   basePath: BASE_PATH,
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        // User is available during sign-in
+        token.id = user.id;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      if (token.id) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
 };
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
