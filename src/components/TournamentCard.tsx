@@ -15,10 +15,10 @@ function TournamentCard({
   image,
 }: TournamentCardProps) {
   return (
-    <Link href={`/tournament/${id}`} passHref>
-      <div className="flex border rounded-lg shadow-lg p-3 bg-white w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-md hover:shadow-xl transition-transform duration-200 cursor-pointer transform hover:scale-103">
+    <Link href={`/tournament/${id}`}>
+      <div className="flex h-full border rounded-lg shadow-lg p-3 bg-white w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-md hover:shadow-xl transition-transform duration-200 cursor-pointer transform hover:scale-103">
         <div className="flex-grow">
-          <h2 className="text-base sm:text-lg font-semibold mt-1.5 mb-3 text-primary overflow-hidden text-ellipsis">
+          <h2 className="text-base sm:text-lg font-semibold mb-3 text-primary overflow-hidden text-ellipsis">
             {name}
           </h2>
           <div className="flex items-center text-primary mb-0.5">
