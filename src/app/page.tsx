@@ -53,12 +53,12 @@ async function Home({ searchParams }: HomeProps) {
       <div className="w-full max-w-6xl mx-auto flex-grow p-4">
         <div className="text-left">
           <h2 className="text-white text-3xl font-semibold mb-4 italic">
-            TRENUTNI TURNIRJI
+            {t('current_tournaments')}
           </h2>
           <SearchBar initialSearchTerm={searchTerm} />
           <div className="inline-block">
             <h3 className="text-tertiary text-xl font-semibold mb-1">
-              PRIHAJAJOČI
+              {t('upcoming')}
             </h3>
             <div className="border-b-4 border-tertiary w-full rounded-full mb-4" />
           </div>

@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+/* import { getTranslations } from 'next-intl/server'; */
 
 interface SearchBarProps {
   initialSearchTerm?: string;
@@ -21,6 +22,8 @@ function debounce(func: Function, wait: number) {
 }
 
 function SearchBar({ initialSearchTerm }: SearchBarProps) {
+  /* const t = await getTranslations('Home'); */
+
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm || '');
   const router = useRouter();
 
@@ -56,7 +59,8 @@ function SearchBar({ initialSearchTerm }: SearchBarProps) {
         type="text"
         value={searchTerm}
         onChange={handleSearch}
-        placeholder="Išči turnirje..."
+        /* placeholder={t('tournament_search')} */
+        placeholder="Išči turnirje"
         className="w-full p-2 rounded-lg bg-quaternary border border-quinary text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-quinary"
       />
     </div>

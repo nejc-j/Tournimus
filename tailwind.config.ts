@@ -23,6 +23,9 @@ const config = {
       },
     },
     extend: {
+      scale: {
+        '103': '1.03',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
