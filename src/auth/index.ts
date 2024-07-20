@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import NextAuth, { User, NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
@@ -61,7 +62,9 @@ const authOptions: NextAuthConfig = {
       return token;
     },
     session({ session, token }) {
-      session.user.id = token.id;
+      if (token.id) {
+        session.user.id = token.id as string;
+      }
       return session;
     },
   },
