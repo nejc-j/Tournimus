@@ -12,31 +12,20 @@ datasource db {
 
 model Tournament {
   id                String       @default(cuid()) @id
-  name              String       // Ime turnirja
-  representative    String       // Zastopnik
-  logo              String?      // Logotip
-  numberOfParticipants Int       // Number of participants
-  mode              String       // Tournament mode
-  participants      Participant[] // Vnos participantov (mogoč združit?)
-  locationId        String?
-  location          Location?    @relation(fields: [locationId], references: [id])
-  eventTime         DateTime     // Čas dogodka
-  numberOfCourts    Int          // Število igrišč
-  startTime         DateTime     // Začetek turnirja
-  matchDuration     Int          // Dolžina ene tekme (in minutes)
-  breakDuration     Int          // Kok je pavza (in minutes)
-  scoringMethod     String       // Način točkovanja(kaj je prioriteta)
+  name              String       // Tournament name
+  numberOfCourts    Int          // Number of courts
+  startTime         DateTime     // Start time
+  matchDuration     Int          // Match duration (in minutes)
+  breakDuration     Int          // Break duration (in minutes)
+  participants      Participant[] // Participants
+
+  locationName      String       // Location name
+  street            String       // Street and number
+  city              String       // City
+  zipCode           String       // Zip code
+
   organizerId       String
   organizer         User         @relation(fields: [organizerId], references: [id])
-  createdAt         DateTime     @default(now()) @map(name: "created_at")
-  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
-}
-
-model Location {
-  id                String       @default(cuid()) @id
-  name              String       // Name of the location
-  address           String       // Address of the location
-  tournaments       Tournament[] // Relation to tournaments
   createdAt         DateTime     @default(now()) @map(name: "created_at")
   updatedAt         DateTime     @updatedAt @map(name: "updated_at")
 }
@@ -44,12 +33,12 @@ model Location {
 model Participant {
   id                String       @default(cuid()) @id
   name              String       // Name of the participant (individual or team)
-  type              ParticipantType // Type of participant (individual or team)
   tournamentId      String
   tournament        Tournament   @relation(fields: [tournamentId], references: [id])
   createdAt         DateTime     @default(now()) @map(name: "created_at")
   updatedAt         DateTime     @updatedAt @map(name: "updated_at")
 }
+
 
 enum ParticipantType {
   INDIVIDUAL
