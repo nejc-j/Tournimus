@@ -1,12 +1,13 @@
-/* eslint-disable react/jsx-props-no-spreading */
+// src/components/forms/GeneralInfoForm.tsx
 
 'use client';
 
+import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-import { Button } from '@/components/ui/button';
+import { GeneralInfoSchema } from '@/schemas';
+import { useFormStore } from '@/store';
 import {
   Form,
   FormControl,
@@ -16,38 +17,42 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Button } from '../ui/button';
+import { useStepper } from '../ui/stepper';
 
-const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  presenter: z.string(),
-});
+type GeneralInfoData = z.infer<typeof GeneralInfoSchema>;
 
-export function GeneralInfoForm() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      username: '',
-      presenter: '',
-    },
+export default function GeneralInfoForm() {
+  const { formData, updateGeneralInfo } = useFormStore();
+  const { nextStep, prevStep, isDisabledStep } = useStepper();
+
+  const form = useForm<GeneralInfoData>({
+    resolver: zodResolver(GeneralInfoSchema),
+    defaultValues: formData.generalInfo,
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-  }
+  useEffect(() => {
+    if (formData.generalInfo) {
+      form.reset(formData.generalInfo);
+    }
+  }, [formData.generalInfo, form]);
+
+  const handleSubmit = form.handleSubmit((data) => {
+    updateGeneralInfo(data);
+    nextStep();
+  });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <FormField
           control={form.control}
-          name="username"
+          name="tournamentName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Ime turnirja</FormLabel>
+              <FormLabel>Tournament name</FormLabel>
               <FormControl>
-                <Input placeholder="Vnesite ime turnirja..." {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -58,15 +63,27 @@ export function GeneralInfoForm() {
           name="presenter"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Ime zastopnika</FormLabel>
+              <FormLabel>Presenter</FormLabel>
               <FormControl>
-                <Input placeholder="Vnesite ime turnirja..." {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div className="w-full flex justify-end gap-2 pt-4">
+          <Button
+            disabled={isDisabledStep}
+            onClick={prevStep}
+            size="sm"
+            variant="outline"
+          >
+            Prejšnji korak
+          </Button>
+          <Button onClick={handleSubmit} size="sm">
+            Naslednji korak
+          </Button>
+        </div>
       </form>
     </Form>
   );

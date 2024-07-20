@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlusCircle, Trash2 } from 'lucide-react';
 
 import {
@@ -14,18 +14,24 @@ import {
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
+import { useStepper } from '../ui/stepper';
+import { useFormStore } from '../../store';
 
 function ParticipantsForm() {
   // State to keep track of the number of participants
   const [participants, setParticipants] = useState([{ id: 1, name: '' }]);
+  const { nextStep, prevStep, isDisabledStep } = useStepper();
+  const { formData, updateParticipants } = useFormStore();
 
-  // Function to handle adding new participants
+  useEffect(() => {
+    setParticipants(formData.participants.participants);
+  }, [formData.participants.participants]);
+
   const addParticipant = () => {
-    const newId = participants.length + 1; // Calculate new ID as the next number in sequence
+    const newId = participants.length + 1;
     setParticipants([...participants, { id: newId, name: '' }]);
   };
 
-  // Function to handle participant name changes
   const handleParticipantChange = (id: number, value: string) => {
     const newParticipants = participants.map((participant) => {
       if (participant.id === id) {
@@ -36,7 +42,6 @@ function ParticipantsForm() {
     setParticipants(newParticipants);
   };
 
-  // Function to handle deletion of a participant
   const deleteParticipant = (id: number) => {
     const updatedParticipants = participants.filter(
       (participant) => participant.id !== id,
@@ -49,6 +54,16 @@ function ParticipantsForm() {
       }),
     );
     setParticipants(reindexedParticipants);
+  };
+
+  const saveParticipants = () => {
+    updateParticipants({ participants });
+    nextStep();
+  };
+
+  const handlePrevious = () => {
+    updateParticipants({ participants });
+    prevStep();
   };
 
   return (
@@ -64,7 +79,9 @@ function ParticipantsForm() {
         <TableBody>
           {participants.map((participant) => (
             <TableRow key={participant.id}>
-              <TableCell className="font-semibold">{participant.id}</TableCell>
+              <TableCell className="font-semibold w-[10px]">
+                {participant.id}
+              </TableCell>
               <TableCell>
                 <Label
                   htmlFor={`participant-${participant.id}`}
@@ -81,7 +98,7 @@ function ParticipantsForm() {
                   placeholder="Enter participant's name"
                 />
               </TableCell>
-              <TableCell>
+              <TableCell className="w-[10px]">
                 <Button
                   onClick={() => deleteParticipant(participant.id)}
                   size="sm"
@@ -97,11 +114,24 @@ function ParticipantsForm() {
       <Button
         onClick={addParticipant}
         size="sm"
-        className="gap-1 bg-succes text-white hover:bg-succes/90"
+        className="gap-1 bg-succes text-white hover:bg-succes/90 mt-4 mb-5 "
       >
         <PlusCircle className="h-3.5 w-3.5 " />
         Dodaj udeleženca
       </Button>
+      <div className="w-full flex justify-end gap-2 pt-4">
+        <Button
+          disabled={isDisabledStep}
+          onClick={handlePrevious}
+          size="sm"
+          variant="outline"
+        >
+          Prejšnji korak
+        </Button>
+        <Button onClick={saveParticipants} size="sm">
+          Naslednji korak
+        </Button>
+      </div>
     </>
   );
 }

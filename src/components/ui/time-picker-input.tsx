@@ -1,3 +1,7 @@
+/* eslint-disable prefer-template */
+/* eslint-disable consistent-return */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable @typescript-eslint/indent */
 import React from 'react';
 import { Input } from '@/components/ui/input';
 

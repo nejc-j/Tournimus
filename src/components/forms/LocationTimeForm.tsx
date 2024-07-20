@@ -1,13 +1,15 @@
-/* eslint-disable react/jsx-props-no-spreading */
+// src/components/forms/LocationTimeForm.tsx
 
 'use client';
 
+import { useEffect, useState, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { CalendarIcon } from 'lucide-react';
-import { TimePickerInput } from '../ui/time-picker-input';
+import { CalendarIcon, Clock } from 'lucide-react';
 import { format } from 'date-fns';
+import { z } from 'zod';
+import { LocationTimeSchema } from '@/schemas';
+import { useFormStore } from '@/store';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -26,54 +28,61 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import React from 'react';
-import { Label } from '../ui/label';
+import { Label } from '@/components/ui/label';
+import { TimePickerInput } from '@/components/ui/time-picker-input';
+import { useStepper } from '../ui/stepper';
+import { createTournament } from '../../app/actions/tournamentActions';
 
-const FormSchema = z.object({
-  locationName: z
-    .string()
-    .min(2, { message: 'Location name must be at least 2 characters.' }),
-  street: z.string().min(1, { message: 'Street and number are required.' }),
-  city: z.string().min(1, { message: 'City is required.' }),
-  zipCode: z.string().min(1, { message: 'Zip code is required.' }),
-  numberOfCourts: z
-    .number()
-    .min(1, { message: 'There must be at least one court.' }),
-  startTime: z.date(),
-  matchDuration: z
-    .number()
-    .min(1, { message: 'Match duration must be at least 1 minute.' }),
-  breakDuration: z
-    .number()
-    .min(1, { message: 'Break duration must be at least 1 minute.' }),
-});
+type LocationTimeData = z.infer<typeof LocationTimeSchema>;
 
-export function LocationTimeForm() {
-  const minuteRef = React.useRef<HTMLInputElement>(null);
-  const hourRef = React.useRef<HTMLInputElement>(null);
-  const [date, setDate] = React.useState<Date>();
+export default function LocationTimeForm() {
+  const minuteRef = useRef<HTMLInputElement>(null);
+  const hourRef = useRef<HTMLInputElement>(null);
+  const [date, setDate] = useState<Date>();
 
-  const form = useForm({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      locationName: '',
-      street: '',
-      city: '',
-      zipCode: '',
-      numberOfCourts: 1,
-      startTime: new Date(),
-      matchDuration: 30,
-      breakDuration: 5,
-    },
+  const { formData, updateLocationTime } = useFormStore();
+  const { prevStep, isDisabledStep } = useStepper();
+
+  const form = useForm<LocationTimeData>({
+    resolver: zodResolver(LocationTimeSchema),
+    defaultValues: formData.locationTime,
   });
 
-  function onSubmit(data: any) {
-    console.log(data);
-  }
+  useEffect(() => {
+    if (formData.locationTime) {
+      form.reset(formData.locationTime);
+    }
+  }, [formData.locationTime, form]);
+
+  const handleSubmit = form.handleSubmit(async (data: LocationTimeData) => {
+    updateLocationTime(data);
+
+    // Fetch complete form data from the store
+    const completeFormData = {
+      generalInfo: formData.generalInfo,
+      locationTime: data,
+      participants: formData.participants,
+    };
+
+    try {
+      const response = await createTournament(completeFormData);
+      console.log('Tournament created successfully:', response);
+      // handle success, e.g., navigate to another page or show a success message
+    } catch (error) {
+      console.error('Error creating tournament:', error);
+      // handle error, e.g., show an error message
+    }
+  });
+
+  const handlePrevious = () => {
+    const currentValues = form.getValues();
+    updateLocationTime(currentValues);
+    prevStep();
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <FormField
           control={form.control}
           name="locationName"
@@ -143,51 +152,70 @@ export function LocationTimeForm() {
           control={form.control}
           name="startTime"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col justify-center">
               <FormLabel>Start Time</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        'w-[240px] pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground',
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, 'PPP')
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormDescription>
-                Select the start date for the event.
-              </FormDescription>
-              <div className="grid gap-1 text-center">
-                <Label htmlFor="hours" className="text-xs">
-                  Hours
-                </Label>
-                <TimePickerInput
-                  picker="hours"
-                  date={date}
-                  setDate={setDate}
-                  ref={hourRef}
-                  onRightFocus={() => minuteRef.current?.focus()}
-                />
+              <div className="flex flex-col gap-4 ">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          'w-[240px] pl-3 text-left font-normal',
+                          !field.value && 'text-muted-foreground',
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, 'PPP')
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <div className=" gap-2 text-center flex items-center">
+                  <div className="flex flex-col gap-1">
+                    <Label htmlFor="hours" className="text-xs">
+                      Ura
+                    </Label>
+                    <TimePickerInput
+                      picker="hours"
+                      date={date}
+                      setDate={setDate}
+                      ref={hourRef}
+                      onRightFocus={() => minuteRef.current?.focus()}
+                    />
+                  </div>
+                  <div className="flex flex-col  gap-1">
+                    <Label htmlFor="minutes" className="text-xs">
+                      Minuta
+                    </Label>
+
+                    <TimePickerInput
+                      picker="minutes"
+                      date={date}
+                      setDate={setDate}
+                      ref={minuteRef}
+                      onRightFocus={() => minuteRef.current?.focus()}
+                    />
+                  </div>
+                  <Clock className="ml-2 h-4 w-4 opacity-50 mt-4" />
+                </div>
               </div>
+              <FormDescription>
+                Select the start date and time for the event.
+              </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
@@ -226,7 +254,19 @@ export function LocationTimeForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div className="w-full flex justify-end gap-2 pt-4">
+          <Button
+            disabled={isDisabledStep}
+            onClick={handlePrevious}
+            size="sm"
+            variant="outline"
+          >
+            Prejšnji korak
+          </Button>
+          <Button type="submit" size="sm">
+            Ustvari turnir
+          </Button>
+        </div>
       </form>
     </Form>
   );
