@@ -2,28 +2,12 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-/* import { getTranslations } from 'next-intl/server'; */
 
 interface SearchBarProps {
   initialSearchTerm?: string;
 }
 
-// Debounce function
-function debounce(func: Function, wait: number) {
-  let timeout: NodeJS.Timeout;
-  return function executedFunction(...args: any[]) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
-
 function SearchBar({ initialSearchTerm }: SearchBarProps) {
-  /* const t = await getTranslations('Home'); */
-
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm || '');
   const router = useRouter();
 
@@ -40,14 +24,9 @@ function SearchBar({ initialSearchTerm }: SearchBarProps) {
     [router],
   );
 
-  const debouncedSearch = useCallback(
-    debounce((term: string) => updateSearchParams(term), 300),
-    [updateSearchParams],
-  );
-
   useEffect(() => {
-    debouncedSearch(searchTerm);
-  }, [searchTerm, debouncedSearch]);
+    updateSearchParams(searchTerm);
+  }, [searchTerm, updateSearchParams]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -59,7 +38,6 @@ function SearchBar({ initialSearchTerm }: SearchBarProps) {
         type="text"
         value={searchTerm}
         onChange={handleSearch}
-        /* placeholder={t('tournament_search')} */
         placeholder="Išči turnirje"
         className="w-full p-2 rounded-lg bg-quaternary border border-quinary text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-quinary"
       />
