@@ -18,6 +18,7 @@ model Tournament {
   matchDuration     Int          // Match duration (in minutes)
   breakDuration     Int          // Break duration (in minutes)
   participants      Participant[] // Participants
+  matches           Match[]      // Matches
 
   locationName      String       // Location name
   street            String       // Street and number
@@ -34,7 +35,31 @@ model Participant {
   id                String       @default(cuid()) @id
   name              String       // Name of the participant (individual or team)
   tournamentId      String
+  matches           Match[]      @relation("MatchParticipants")
   tournament        Tournament   @relation(fields: [tournamentId], references: [id])
+  createdAt         DateTime     @default(now()) @map(name: "created_at")
+  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+  results           Result[]     // Add this line for the opposite relation
+}
+
+model Match {
+  id                String       @default(cuid()) @id
+  startTime         DateTime     // Start time of the match
+  tournamentId      String
+  tournament        Tournament   @relation(fields: [tournamentId], references: [id])
+  participants      Participant[] @relation("MatchParticipants")
+  results           Result[]     // Results of the match
+  createdAt         DateTime     @default(now()) @map(name: "created_at")
+  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+}
+
+model Result {
+  id                String       @default(cuid()) @id
+  matchId           String
+  match             Match        @relation(fields: [matchId], references: [id])
+  participantId     String
+  participant       Participant  @relation(fields: [participantId], references: [id])
+  score             Int          @default(0) // Initial score is 0
   createdAt         DateTime     @default(now()) @map(name: "created_at")
   updatedAt         DateTime     @updatedAt @map(name: "updated_at")
 }

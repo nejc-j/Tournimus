@@ -5,9 +5,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { CalendarIcon, Clock } from 'lucide-react';
+import { CalendarIcon, Clock, LoaderCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { z } from 'zod';
+import { useRouter } from 'next/navigation';
 import { LocationTimeSchema } from '@/schemas';
 import { useFormStore } from '@/store';
 import { Button } from '@/components/ui/button';
@@ -39,6 +40,8 @@ export default function LocationTimeForm() {
   const minuteRef = useRef<HTMLInputElement>(null);
   const hourRef = useRef<HTMLInputElement>(null);
   const [date, setDate] = useState<Date>();
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const { formData, updateLocationTime } = useFormStore();
   const { prevStep, isDisabledStep } = useStepper();
@@ -55,6 +58,7 @@ export default function LocationTimeForm() {
   }, [formData.locationTime, form]);
 
   const handleSubmit = form.handleSubmit(async (data: LocationTimeData) => {
+    setIsLoading(true);
     updateLocationTime(data);
 
     // Fetch complete form data from the store
@@ -67,10 +71,12 @@ export default function LocationTimeForm() {
     try {
       const response = await createTournament(completeFormData);
       console.log('Tournament created successfully:', response);
-      // handle success, e.g., navigate to another page or show a success message
+      router.push(`/tournament/${response.id}`);
     } catch (error) {
       console.error('Error creating tournament:', error);
       // handle error, e.g., show an error message
+    } finally {
+      setIsLoading(false);
     }
   });
 
@@ -263,7 +269,8 @@ export default function LocationTimeForm() {
           >
             Prejšnji korak
           </Button>
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" disabled={isLoading}>
+            {isLoading && <LoaderCircle className="animate-spin" />}
             Ustvari turnir
           </Button>
         </div>
