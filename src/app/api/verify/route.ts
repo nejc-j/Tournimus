@@ -32,11 +32,21 @@ export async function GET(request: Request) {
       },
     });
 
-    return NextResponse.redirect('/auth/signin');
+    // Correct the redirect URL if necessary
+    return NextResponse.redirect('http://localhost:3000/api/auth/signin');
   } catch (error) {
     console.error('Error in verification route:', error);
+
+    // Capture the error message and stack trace
+    const errorMessage = error.message || 'An unexpected error occurred';
+    const errorStack = error.stack || '';
+
     return NextResponse.json(
-      { message: 'Internal server error' },
+      {
+        message: 'Internal server error',
+        error: errorMessage,
+        stack: errorStack,
+      },
       { status: 500 },
     );
   }

@@ -1,18 +1,18 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, Clock4, MapPin } from 'lucide-react';
-import { Tournament } from '../types';
+import { Tournament } from '@prisma/client';
 
 interface TournamentCardProps extends Tournament {}
 
 function TournamentCard({
   id,
   name,
-  date,
-  time,
-  location,
-  image,
+  startTime,
+  locationName,
+  city,
+  street,
+  zipCode,
 }: TournamentCardProps) {
   return (
     <Link href={`/tournament/${id}`}>
@@ -23,30 +23,26 @@ function TournamentCard({
           </h2>
           <div className="flex items-center text-primary mb-0.5">
             <Calendar className="text-tertiary mr-2" size="16" />
-            <p className="text-xs sm:text-sm">{date}</p>
+            <p className="text-xs sm:text-sm">
+              {new Date(startTime).toLocaleDateString()}
+            </p>
           </div>
           <div className="flex items-center text-primary mb-3">
             <Clock4 className="text-tertiary mr-2" size="16" />
-            <p className="text-xs sm:text-sm">{time}</p>
+            <p className="text-xs sm:text-sm">
+              {new Date(startTime).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </p>
           </div>
           <div className="flex items-start text-primary">
             <MapPin className="text-tertiary mr-2 flex-none" size="16" />
-            <p className="font-semibold text-xs sm:text-sm">{location}</p>
+            <p className="font-semibold text-xs sm:text-sm">
+              {locationName}, {street}, {city}, {zipCode}
+            </p>
           </div>
         </div>
-        {image && (
-          <div className="flex items-center justify-center ml-3 mr-3">
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16">
-              <Image
-                src={image}
-                alt={`${name} logo`}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-lg"
-              />
-            </div>
-          </div>
-        )}
       </div>
     </Link>
   );

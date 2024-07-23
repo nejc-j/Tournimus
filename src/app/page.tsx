@@ -1,25 +1,47 @@
 import React from 'react';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
-import TournamentList from '../components/TournamentList';
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { PrismaClient } from '@prisma/client';
+import TournamentList from '../components/TournamentList';
 import { Button } from '../components/ui/button';
-import { Tournament } from '../types';
 import SearchBar from '../components/ui/searchbar';
+import { Tournament } from '../types';
+
+const prisma = new PrismaClient();
 
 async function getTournaments(searchTerm?: string): Promise<Tournament[]> {
-  const res = await fetch('http://localhost:3000/tournaments.json', {
-    cache: 'no-store',
+  const allTournaments = await prisma.tournament.findMany({
+    where: {
+      name: {
+        contains: searchTerm,
+        mode: 'insensitive',
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      numberOfCourts: true,
+      startTime: true,
+      matchDuration: true,
+      breakDuration: true,
+      locationName: true,
+      street: true,
+      city: true,
+      zipCode: true,
+      organizerId: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
-  const allTournaments = await res.json();
 
-  if (searchTerm) {
-    return allTournaments.filter((tournament: Tournament) =>
-      tournament.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-  }
-  return allTournaments;
+  // Transform data to match the Tournament type if necessary
+  return allTournaments.map((tournament) => ({
+    ...tournament,
+    startTime: new Date(tournament.startTime),
+    createdAt: new Date(tournament.createdAt),
+    updatedAt: new Date(tournament.updatedAt),
+  }));
 }
 
 interface HomeProps {

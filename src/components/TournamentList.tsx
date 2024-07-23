@@ -1,6 +1,6 @@
 import React from 'react';
+import { Tournament } from '@prisma/client';
 import TournamentCard from './TournamentCard';
-import { Tournament } from '../types';
 
 interface TournamentListProps {
   tournaments?: Tournament[];
@@ -18,10 +18,17 @@ function TournamentList({ tournaments }: TournamentListProps) {
               key={tournament.id}
               id={tournament.id}
               name={tournament.name}
-              date={tournament.date}
-              time={tournament.time}
-              location={tournament.location}
-              image={tournament.image}
+              startTime={tournament.startTime}
+              locationName={tournament.locationName}
+              street={tournament.street}
+              city={tournament.city}
+              zipCode={tournament.zipCode}
+              numberOfCourts={tournament.numberOfCourts}
+              matchDuration={tournament.matchDuration}
+              breakDuration={tournament.breakDuration}
+              organizerId={tournament.organizerId}
+              createdAt={tournament.createdAt}
+              updatedAt={tournament.updatedAt}
             />
           ))}
         </div>
