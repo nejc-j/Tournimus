@@ -1,35 +1,30 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface SearchBarProps {
-  initialSearchTerm?: string;
+  initialSearchTerm: string;
+  placeholder: string;
 }
 
-function SearchBar({ initialSearchTerm }: SearchBarProps) {
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm || '');
+function SearchBar({ initialSearchTerm, placeholder }: SearchBarProps) {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const updateSearchParams = useCallback(
-    (term: string) => {
-      const searchParams = new URLSearchParams(window.location.search);
-      if (term) {
-        searchParams.set('search', term);
-      } else {
-        searchParams.delete('search');
-      }
-      router.push(`/?${searchParams.toString()}`, { scroll: false });
-    },
-    [router],
-  );
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchTerm = event.target.value;
+    setSearchTerm(newSearchTerm);
 
-  useEffect(() => {
-    updateSearchParams(searchTerm);
-  }, [searchTerm, updateSearchParams]);
+    const params = new URLSearchParams(searchParams);
+    if (newSearchTerm) {
+      params.set('search', newSearchTerm);
+    } else {
+      params.delete('search');
+    }
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    router.push(`?${params.toString()}`);
   };
 
   return (
@@ -38,15 +33,11 @@ function SearchBar({ initialSearchTerm }: SearchBarProps) {
         type="text"
         value={searchTerm}
         onChange={handleSearch}
-        placeholder="Išči turnirje"
+        placeholder={placeholder}
         className="w-full p-2 rounded-lg bg-quaternary border border-quinary text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-quinary"
       />
     </div>
   );
 }
-
-SearchBar.defaultProps = {
-  initialSearchTerm: '',
-};
 
 export default SearchBar;

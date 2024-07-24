@@ -50,6 +50,7 @@ interface HomeProps {
 
 async function Home({ searchParams }: HomeProps) {
   const t = await getTranslations('Home');
+  const tSearchBar = await getTranslations('SearchBar');
   const searchTerm = searchParams.search || '';
   const tournaments = await getTournaments(searchTerm);
 
@@ -81,7 +82,10 @@ async function Home({ searchParams }: HomeProps) {
           <h2 className="text-white text-3xl font-semibold mt-4 mb-4 italic">
             {t('current_tournaments')}
           </h2>
-          <SearchBar initialSearchTerm={searchTerm} />
+          <SearchBar
+            initialSearchTerm={searchTerm}
+            placeholder={tSearchBar('tournament_search')}
+          />
           <div className="inline-block">
             <h3 className="text-tertiary text-xl font-semibold mb-1">
               {t('upcoming')}
