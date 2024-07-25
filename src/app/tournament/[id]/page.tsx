@@ -34,6 +34,7 @@ export default async function TournamentPage({ params }: TournamentPageProps) {
   const tournament = await getTournament(params.id);
 
   if (!tournament) {
+    console.log('test');
     notFound();
   }
 
