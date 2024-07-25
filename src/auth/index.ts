@@ -54,6 +54,25 @@ const authOptions: NextAuthConfig = {
   basePath: BASE_PATH,
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === 'google') {
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email ?? undefined },
+        });
+
+        if (!existingUser) {
+          await prisma.user.create({
+            data: {
+              email: user.email ?? '',
+              name: user.name ?? '',
+              password: '', // Set a default password or handle it appropriately
+              verified: true,
+            },
+          });
+        }
+      }
+      return true;
+    },
     jwt({ token, user }) {
       if (user) {
         // User is available during sign-in
