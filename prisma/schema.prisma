@@ -19,6 +19,7 @@ model Tournament {
   breakDuration     Int          // Break duration (in minutes)
   participants      Participant[] // Participants
   matches           Match[]      // Matches
+  groups            Group[]      // Groups
 
   locationName      String       // Location name
   street            String       // Street and number
@@ -37,9 +38,12 @@ model Participant {
   tournamentId      String
   matches           Match[]      @relation("MatchParticipants")
   tournament        Tournament   @relation(fields: [tournamentId], references: [id])
+  groupId           String?
+  group             Group?       @relation(fields: [groupId], references: [id])
   createdAt         DateTime     @default(now()) @map(name: "created_at")
   updatedAt         DateTime     @updatedAt @map(name: "updated_at")
-  results           Result[]     // Add this line for the opposite relation
+  results           Result[]     // Results
+
 }
 
 model Match {
@@ -63,6 +67,17 @@ model Result {
   createdAt         DateTime     @default(now()) @map(name: "created_at")
   updatedAt         DateTime     @updatedAt @map(name: "updated_at")
 }
+
+model Group {
+  id                String       @default(cuid()) @id
+  name              String       // Group name (e.g., Group A, Group B)
+  tournamentId      String
+  tournament        Tournament   @relation(fields: [tournamentId], references: [id])
+  participants      Participant[]
+  createdAt         DateTime     @default(now()) @map(name: "created_at")
+  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+}
+
 
 
 enum ParticipantType {

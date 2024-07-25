@@ -29,6 +29,11 @@ export async function GET(
             },
           },
           organizer: true,
+          groups: {
+            include: {
+              participants: true,
+            },
+          },
         },
       });
 

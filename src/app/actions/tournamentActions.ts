@@ -44,15 +44,18 @@ export async function createTournament(formData: any) {
       },
     });
 
-    // Creating participants concurrently
-
-    // Generating matches with the correct parameters
-    await generateMatches(
+    // Assign participants to groups and create group matches
+    const groupSize = 4; // Example group size
+    await assignParticipantsToGroups(
+      newTournament.id,
+      newTournament.participants,
+      groupSize,
+    );
+    await generateGroupStageMatches(
       newTournament.id,
       locationTime.startTime,
       locationTime.matchDuration,
       locationTime.breakDuration,
-      newTournament.participants,
     );
 
     // Revalidate the home page (or any relevant path)
@@ -65,54 +68,92 @@ export async function createTournament(formData: any) {
   }
 }
 
-async function generateMatches(
+async function assignParticipantsToGroups(
+  tournamentId: string,
+  participants: Participant[],
+  groupSize: number,
+) {
+  const shuffledParticipants = participants.sort(() => 0.5 - Math.random());
+
+  await Promise.all(
+    Array(Math.ceil(shuffledParticipants.length / groupSize))
+      .fill(null)
+      .map((_, groupIndex) => {
+        const groupParticipants = shuffledParticipants.slice(
+          groupIndex * groupSize,
+          (groupIndex + 1) * groupSize,
+        );
+
+        return prisma.group
+          .create({
+            data: {
+              name: `Group ${String.fromCharCode(65 + groupIndex)}`, // A, B, C, etc.
+              tournamentId,
+              participants: {
+                connect: groupParticipants.map((p) => ({ id: p.id })),
+              },
+            },
+          })
+          .then((group) =>
+            prisma.participant.updateMany({
+              where: { id: { in: groupParticipants.map((p) => p.id) } },
+              data: { groupId: group.id },
+            }),
+          );
+      }),
+  );
+}
+
+async function generateGroupStageMatches(
   tournamentId: string,
   startTime: string,
   matchDuration: number,
   breakDuration: number,
-  participants: Participant[],
 ) {
+  const groups = await prisma.group.findMany({
+    where: { tournamentId },
+    include: { participants: true },
+  });
+
   const startTimeDate = new Date(startTime);
 
-  console.log(
-    tournamentId,
-    startTime,
-    matchDuration,
-    breakDuration,
-    participants,
+  await Promise.all(
+    groups.flatMap((group) =>
+      group.participants.flatMap((participant, i) =>
+        group.participants.slice(i + 1).map((opponent, j) => {
+          const matchStartTime = new Date(
+            startTimeDate.getTime() +
+              (matchDuration + breakDuration) * (i + j) * 60000,
+          );
+
+          return prisma.match
+            .create({
+              data: {
+                startTime: matchStartTime,
+                tournamentId,
+                participants: {
+                  connect: [{ id: participant.id }, { id: opponent.id }],
+                },
+              },
+            })
+            .then((match) =>
+              prisma.result.createMany({
+                data: [
+                  {
+                    matchId: match.id,
+                    participantId: participant.id,
+                    score: 0,
+                  },
+                  {
+                    matchId: match.id,
+                    participantId: opponent.id,
+                    score: 0,
+                  },
+                ],
+              }),
+            );
+        }),
+      ),
+    ),
   );
-
-  for (let i = 0; i < participants.length; i += 2) {
-    if (i + 1 >= participants.length) break;
-
-    const matchStartTime = new Date(
-      startTimeDate.getTime() +
-        (matchDuration + breakDuration) * (i / 2) * 60000,
-    );
-
-    const match = await prisma.match.create({
-      data: {
-        startTime: matchStartTime,
-        tournamentId,
-        participants: {
-          connect: [{ id: participants[i].id }, { id: participants[i + 1].id }],
-        },
-      },
-    });
-
-    await prisma.result.createMany({
-      data: [
-        {
-          matchId: match.id,
-          participantId: participants[i].id,
-          score: 0,
-        },
-        {
-          matchId: match.id,
-          participantId: participants[i + 1].id,
-          score: 0,
-        },
-      ],
-    });
-  }
 }
