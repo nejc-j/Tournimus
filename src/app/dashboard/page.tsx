@@ -7,6 +7,7 @@ import { prisma } from '../../../lib/prisma';
 import { Button } from '@/components/ui/button';
 import SignInOutButton from './SignInOutButton';
 import TournamentList from '@/components/TournamentList';
+import { Tournament } from '@/types';
 
 export default async function Dashboard() {
   const session = await auth();
@@ -33,20 +34,33 @@ export default async function Dashboard() {
       street: true,
       city: true,
       zipCode: true,
+      numberOfCourts: true,
+      matchDuration: true,
+      breakDuration: true,
+      organizerId: true,
+      createdAt: true,
+      updatedAt: true,
     },
   });
 
   // Transform the data to match the Tournament type
-  const transformedTournaments = tournaments.map((tournament) => ({
-    id: tournament.id,
-    name: tournament.name,
-    date: new Date(tournament.startTime).toLocaleDateString(),
-    time: new Date(tournament.startTime).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
+  const transformedTournaments: Tournament[] = tournaments.map(
+    (tournament) => ({
+      id: tournament.id,
+      name: tournament.name,
+      startTime: new Date(tournament.startTime),
+      locationName: tournament.locationName,
+      street: tournament.street,
+      city: tournament.city,
+      zipCode: tournament.zipCode,
+      numberOfCourts: tournament.numberOfCourts,
+      matchDuration: tournament.matchDuration,
+      breakDuration: tournament.breakDuration,
+      organizerId: tournament.organizerId,
+      createdAt: new Date(tournament.createdAt),
+      updatedAt: new Date(tournament.updatedAt),
     }),
-    location: `${tournament.locationName}, ${tournament.street}, ${tournament.city}, ${tournament.zipCode}`,
-  }));
+  );
 
   return (
     <main className="flex flex-col items-center justify-start p-4 min-h-screen mt-24">
