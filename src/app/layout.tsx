@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { SessionProvider } from 'next-auth/react';
 import { Poppins } from 'next/font/google';
 import './globals.css';
 import { NextIntlClientProvider } from 'next-intl';
@@ -29,9 +30,11 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={poppins.className}>
-        <NextIntlClientProvider messages={messages}>
-          <Header /> {children}
-        </NextIntlClientProvider>
+        <SessionProvider>
+          <NextIntlClientProvider messages={messages}>
+            <Header /> {children}
+          </NextIntlClientProvider>
+        </SessionProvider>
       </body>
     </html>
   );
