@@ -43,7 +43,13 @@ model Participant {
   createdAt         DateTime     @default(now()) @map(name: "created_at")
   updatedAt         DateTime     @updatedAt @map(name: "updated_at")
   results           Result[]     // Results
+  points            Int          @default(0) // Points scored by the participant
+}
 
+enum MatchStatus {
+  UPCOMING
+  IN_PROGRESS
+  FINISHED
 }
 
 model Match {
@@ -53,19 +59,23 @@ model Match {
   tournament        Tournament   @relation(fields: [tournamentId], references: [id])
   participants      Participant[] @relation("MatchParticipants")
   results           Result[]     // Results of the match
+  status            MatchStatus  @default(UPCOMING)
+  pointsCalculated  Boolean      @default(false)
   createdAt         DateTime     @default(now()) @map(name: "created_at")
   updatedAt         DateTime     @updatedAt @map(name: "updated_at")
 }
 
 model Result {
-  id                String       @default(cuid()) @id
-  matchId           String
-  match             Match        @relation(fields: [matchId], references: [id])
-  participantId     String
-  participant       Participant  @relation(fields: [participantId], references: [id])
-  score             Int          @default(0) // Initial score is 0
-  createdAt         DateTime     @default(now()) @map(name: "created_at")
-  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+  id             String    @default(cuid()) @id
+  matchId        String
+  match          Match     @relation(fields: [matchId], references: [id])
+  participantId  String
+  participant    Participant @relation(fields: [participantId], references: [id])
+  score          Int       @default(0) // Initial score is 0
+  createdAt      DateTime  @default(now()) @map(name: "created_at")
+  updatedAt      DateTime  @updatedAt @map(name: "updated_at")
+
+  @@unique([matchId, participantId])
 }
 
 model Group {

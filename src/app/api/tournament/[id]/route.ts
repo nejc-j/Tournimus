@@ -1,5 +1,3 @@
-// app/api/tournaments/[id]/route.ts
-
 import { NextResponse } from 'next/server';
 import { prisma } from '../../../../../lib/prisma';
 import { ExtendedTournament } from '../../../../types';
@@ -19,6 +17,7 @@ export async function GET(
             select: {
               id: true,
               name: true,
+              points: true, // Include points
               // Add other fields as needed
             },
           },
@@ -31,7 +30,14 @@ export async function GET(
           organizer: true,
           groups: {
             include: {
-              participants: true,
+              participants: {
+                select: {
+                  id: true,
+                  name: true,
+                  points: true, // Include points
+                  // Add other fields as needed
+                },
+              },
             },
           },
         },

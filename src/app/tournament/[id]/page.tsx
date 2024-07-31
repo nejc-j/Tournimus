@@ -1,18 +1,11 @@
 import React from 'react';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Calendar, Clock4, MapPin } from 'lucide-react';
+import Image from 'next/image';
 import { Card } from '@/components/ui/card';
-import { ExtendedTournament, MatchWithDetails } from '../../../types';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Participant } from '@prisma/client';
+import { ExtendedTournament } from '../../../types';
+import GroupSwitcher from '../../../components/GroupSwitcher';
+import MatchesTable from '../../../components/MatchesTable';
 
 async function getTournament(id: string): Promise<ExtendedTournament | null> {
   const res = await fetch(`http://localhost:3000/api/tournament/${id}`, {
@@ -37,13 +30,6 @@ export default async function TournamentPage({ params }: TournamentPageProps) {
     console.log('test');
     notFound();
   }
-
-  const isMatchLive = (startTime: Date, matchDuration: number): boolean => {
-    const start = new Date(startTime);
-    const end = new Date(start.getTime() + matchDuration * 60000);
-    const now = new Date();
-    return now >= start && now <= end;
-  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start p-0 m-0">
@@ -84,77 +70,21 @@ export default async function TournamentPage({ params }: TournamentPageProps) {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto p-4 w-full">
-        <h2 className="text-2xl font-bold mb-4">Groups</h2>
-        {tournament.groups.map((group) => (
-          <div key={group.id} className="mb-4">
-            <h3 className="text-xl font-semibold mb-2">{group.name}</h3>
-            <ul className="list-disc list-inside">
-              {group.participants.map((participant: Participant) => (
-                <li key={participant.id} className="ml-4">
-                  {participant.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-
-        <h2 className="text-2xl font-bold mb-4">Matches</h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Number</TableHead>
-              <TableHead>Match</TableHead>
-              <TableHead>Score</TableHead>
-              <TableHead>Start Time</TableHead>
-              <TableHead>Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tournament.matches.map(
-              (match: MatchWithDetails, index: number) => (
-                <TableRow key={match.id}>
-                  <TableCell className="font-semibold w-[10px]">
-                    {index + 1}
-                  </TableCell>
-                  <TableCell>
-                    {match.participants.map(
-                      (participant: Participant, pIndex: number) => (
-                        <div key={participant.id}>
-                          {participant.name}
-                          {pIndex === 0 && <span> vs </span>}
-                        </div>
-                      ),
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {match.results.map((result, rIndex) => (
-                      <div key={rIndex}>
-                        {result.participantId === match.participants[0].id
-                          ? result.score
-                          : ''}
-                        {result.participantId === match.participants[1].id
-                          ? result.score
-                          : ''}
-                      </div>
-                    ))}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(match.startTime).toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    {isMatchLive(match.startTime, tournament.matchDuration)
-                      ? 'Live'
-                      : 'Upcoming'}
-                  </TableCell>
-                </TableRow>
-              ),
-            )}
-          </TableBody>
-        </Table>
+      <div className="max-w-6xl mx-auto p-4 w-full flex flex-col md:flex-row">
+        <div className="w-full md:w-1/2 md:pr-2">
+          <Card className="bg-white/5 backdrop-blur-md p-6 text-white border-none ">
+            <h2 className="text-2xl font-bold mb-4">Matches</h2>
+            <MatchesTable
+              matches={tournament.matches}
+              matchDuration={tournament.matchDuration}
+            />
+          </Card>
+        </div>
+        <div className="w-full md:w-1/2 md:pl-2">
+          <Card className="bg-white/5 backdrop-blur-md p-6 text-white border-none ">
+            <GroupSwitcher groups={tournament.groups} />
+          </Card>
+        </div>
       </div>
     </div>
   );
