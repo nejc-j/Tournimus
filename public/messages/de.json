@@ -71,7 +71,7 @@
     "break_duration": "Pausendauer (Minuten)",
     "break_duration_placeholder": "Pausendauer eingeben...",
     "previous_step": "Vorheriger Schritt",
-    "next_step": "Nächster Schritt"
+    "last_step": "Erstelle ein neues Turnier"
   },
   "LanguageSwitcher": {
     "languages": "Sprachen",

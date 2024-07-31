@@ -271,7 +271,7 @@ export default function LocationTimeForm() {
           </Button>
           <Button type="submit" size="sm" disabled={isLoading}>
             {isLoading && <LoaderCircle className="animate-spin" />}
-            {t('next_step')}
+            {t('last_step')}
           </Button>
         </div>
       </form>
