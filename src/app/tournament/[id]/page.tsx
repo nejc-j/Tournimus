@@ -25,6 +25,7 @@ interface TournamentPageProps {
 
 export default async function TournamentPage({ params }: TournamentPageProps) {
   const tournament = await getTournament(params.id);
+  console.log(tournament);
 
   if (!tournament) {
     notFound();
