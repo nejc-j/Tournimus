@@ -18,6 +18,8 @@ model Tournament {
   matchDuration     Int          // Match duration (in minutes)
   breakDuration     Int          // Break duration (in minutes)
   participants      Participant[] // Participants
+  matches           Match[]      // Matches
+  groups            Group[]      // Groups
 
   locationName      String       // Location name
   street            String       // Street and number
@@ -34,10 +36,58 @@ model Participant {
   id                String       @default(cuid()) @id
   name              String       // Name of the participant (individual or team)
   tournamentId      String
+  matches           Match[]      @relation("MatchParticipants")
   tournament        Tournament   @relation(fields: [tournamentId], references: [id])
+  groupId           String?
+  group             Group?       @relation(fields: [groupId], references: [id])
+  createdAt         DateTime     @default(now()) @map(name: "created_at")
+  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+  results           Result[]     // Results
+  points            Int          @default(0) // Points scored by the participant
+}
+
+enum MatchStatus {
+  UPCOMING
+  IN_PROGRESS
+  FINISHED
+}
+
+model Match {
+  id                String       @default(cuid()) @id
+  startTime         DateTime     // Start time of the match
+  tournamentId      String
+  tournament        Tournament   @relation(fields: [tournamentId], references: [id])
+  participants      Participant[] @relation("MatchParticipants")
+  results           Result[]     // Results of the match
+  status            MatchStatus  @default(UPCOMING)
+  pointsCalculated  Boolean      @default(false)
   createdAt         DateTime     @default(now()) @map(name: "created_at")
   updatedAt         DateTime     @updatedAt @map(name: "updated_at")
 }
+
+model Result {
+  id             String    @default(cuid()) @id
+  matchId        String
+  match          Match     @relation(fields: [matchId], references: [id])
+  participantId  String
+  participant    Participant @relation(fields: [participantId], references: [id])
+  score          Int       @default(0) // Initial score is 0
+  createdAt      DateTime  @default(now()) @map(name: "created_at")
+  updatedAt      DateTime  @updatedAt @map(name: "updated_at")
+
+  @@unique([matchId, participantId])
+}
+
+model Group {
+  id                String       @default(cuid()) @id
+  name              String       // Group name (e.g., Group A, Group B)
+  tournamentId      String
+  tournament        Tournament   @relation(fields: [tournamentId], references: [id])
+  participants      Participant[]
+  createdAt         DateTime     @default(now()) @map(name: "created_at")
+  updatedAt         DateTime     @updatedAt @map(name: "updated_at")
+}
+
 
 
 enum ParticipantType {

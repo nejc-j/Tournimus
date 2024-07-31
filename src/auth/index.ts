@@ -61,14 +61,19 @@ const authOptions: NextAuthConfig = {
         });
 
         if (!existingUser) {
-          await prisma.user.create({
+          // Create a new user if not found
+          const newUser = await prisma.user.create({
             data: {
               email: user.email ?? '',
               name: user.name ?? '',
-              password: '', // Set a default password or handle it appropriately
+              password: '', // Google sign-in users do not need a password
               verified: true,
             },
           });
+          user.id = newUser.id; // Attach the new DB user ID to the user object
+        } else {
+          // Update the user object with the existing user ID
+          user.id = existingUser.id;
         }
       }
       return true;
