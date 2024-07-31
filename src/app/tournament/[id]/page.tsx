@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Calendar, Clock4, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
-import { ExtendedTournament } from '../../../types';
+import { ExtendedTournament, GroupWithParticipants } from '../../../types';
 import GroupSwitcher from '../../../components/GroupSwitcher';
 import MatchesTable from '../../../components/MatchesTable';
 
@@ -27,7 +27,6 @@ export default async function TournamentPage({ params }: TournamentPageProps) {
   const tournament = await getTournament(params.id);
 
   if (!tournament) {
-    console.log('test');
     notFound();
   }
 
@@ -82,7 +81,9 @@ export default async function TournamentPage({ params }: TournamentPageProps) {
         </div>
         <div className="w-full md:w-1/2 md:pl-2">
           <Card className="bg-white/5 backdrop-blur-md p-6 text-white border-none ">
-            <GroupSwitcher groups={tournament.groups} />
+            <GroupSwitcher
+              groups={tournament.groups as GroupWithParticipants[]}
+            />
           </Card>
         </div>
       </div>

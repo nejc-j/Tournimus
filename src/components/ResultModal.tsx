@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Participant } from '@prisma/client';
-import { useMediaQuery } from '../utils/use-media-query';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -10,14 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { MatchWithDetails } from '../types';
 import {
@@ -32,7 +23,6 @@ interface ResultModalProps {
 }
 
 function ResultModal({ match, open, onClose }: ResultModalProps) {
-  const isDesktop = useMediaQuery('(min-width: 768px)');
   const [scores, setScores] = React.useState<{ [key: string]: number }>(() =>
     match.results.reduce(
       (acc, result) => {
@@ -154,11 +144,14 @@ function ResultModal({ match, open, onClose }: ResultModalProps) {
     ),
     [
       match.participants,
+      match.status,
+      onClose,
+      isSubmitting,
+      handleSave,
+      handleEndMatch,
+      isEnding,
       scores,
       handleScoreChange,
-      handleSave,
-      isSubmitting,
-      onClose,
     ],
   );
 
@@ -174,6 +167,8 @@ function ResultModal({ match, open, onClose }: ResultModalProps) {
   );
 
   /*
+
+  To je za drawer, trenutno neki ne dela ok
   return (
     <Drawer open={open} onOpenChange={onClose}>
       <DrawerContent>

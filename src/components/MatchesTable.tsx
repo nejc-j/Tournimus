@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable react/no-unstable-nested-components */
+
 'use client';
 
 import * as React from 'react';
@@ -59,8 +62,8 @@ export default function MatchesTable({
         const { results } = row.original;
         return (
           <>
-            {results.map((result, index) => (
-              <div key={index}>
+            {results.map((result) => (
+              <div key={`${result.participantId}-${result.score}`}>
                 {result.participantId === row.original.participants[0].id
                   ? result.score
                   : ''}
@@ -121,14 +124,6 @@ export default function MatchesTable({
     return now >= start && now <= end;
   };
 
-  const handleSaveResults = async (
-    results: { participantId: string; score: number }[],
-  ) => {
-    // Implement the API call to save the results
-    console.log('Saving results:', results);
-    // You might want to refresh the matches data after saving
-  };
-
   return (
     <div className="rounded-md ">
       <Table>
@@ -178,10 +173,6 @@ export default function MatchesTable({
           match={selectedMatch}
           open={!!selectedMatch}
           onClose={() => setSelectedMatch(null)}
-          onSave={(results) => {
-            handleSaveResults(results);
-            setSelectedMatch(null);
-          }}
         />
       )}
     </div>

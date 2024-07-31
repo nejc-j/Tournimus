@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { Group, Participant } from '@prisma/client';
 import {
   Table,
   TableBody,
@@ -10,11 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
+import { GroupWithParticipants } from '../types';
 
 interface GroupSwitcherProps {
-  groups: Group[];
+  groups: GroupWithParticipants[];
 }
 
 function GroupSwitcher({ groups }: GroupSwitcherProps) {
@@ -23,23 +22,11 @@ function GroupSwitcher({ groups }: GroupSwitcherProps) {
   );
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
-    }
-  };
-
   const renderGroup = (groupId: string) => {
-    const group = groups.find((group) => group.id === groupId);
+    const group = groups.find((filteredGroup) => filteredGroup.id === groupId);
     if (!group) return null;
 
-    const sortedParticipants = group.participants.sort(
+    const sortedParticipants = [...group.participants].sort(
       (a, b) => b.points - a.points,
     );
 
@@ -81,7 +68,7 @@ function GroupSwitcher({ groups }: GroupSwitcherProps) {
         >
           {groups.map((group) => (
             <Button
-              variant={'outline'}
+              variant="outline"
               key={group.id}
               className={`px-4 py-2 rounded ${
                 selectedGroup === group.id

@@ -1,6 +1,6 @@
 // types/index.ts
 
-import { Prisma } from '@prisma/client';
+import { Participant, Prisma, Group } from '@prisma/client';
 
 // Define a type that includes the participants and results relation for matches
 const matchWithDetails = Prisma.validator<Prisma.MatchArgs>()({
@@ -29,9 +29,14 @@ const tournamentWithMatches = Prisma.validator<Prisma.TournamentArgs>()({
       },
     },
     organizer: true,
+    groups: true,
   },
 });
 
 export type ExtendedTournament = Prisma.TournamentGetPayload<
   typeof tournamentWithMatches
 >;
+
+export interface GroupWithParticipants extends Group {
+  participants: Participant[];
+}
