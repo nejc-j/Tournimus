@@ -3,6 +3,7 @@
 import { useState, useTransition, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 import {
   DropdownMenu,
@@ -18,6 +19,7 @@ import { getUserLocale, setUserLocale } from '../services/locale';
 import { Locale } from '../config';
 
 function LanguageSwitcher() {
+  const t = useTranslations('LanguageSwitcher');
   const [, startTransition] = useTransition();
   const [selectedLocale, setSelectedLocale] = useState<Locale>('en');
   const [isOpen, setIsOpen] = useState(false);
@@ -68,7 +70,7 @@ function LanguageSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>Jeziki</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('languages')}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => handleLocaleChange('sl')}>
           <Image
@@ -80,7 +82,7 @@ function LanguageSwitcher() {
             priority
             className="mr-2"
           />
-          Slovenščina
+          {t('slovene')}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => handleLocaleChange('en')}>
           <Image
@@ -92,7 +94,7 @@ function LanguageSwitcher() {
             priority
             className="mr-2"
           />
-          English
+          {t('english')}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => handleLocaleChange('de')}>
           <Image
@@ -104,7 +106,7 @@ function LanguageSwitcher() {
             priority
             className="mr-2"
           />
-          German
+          {t('german')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

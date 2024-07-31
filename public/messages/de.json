@@ -72,5 +72,11 @@
     "break_duration_placeholder": "Pausendauer eingeben...",
     "previous_step": "Vorheriger Schritt",
     "next_step": "Nächster Schritt"
+  },
+  "LanguageSwitcher": {
+    "languages": "Sprachen",
+    "slovene": "Slowenisch",
+    "english": "Englisch",
+    "german": "Deutsch"
   }
 }
