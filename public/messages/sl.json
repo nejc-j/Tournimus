@@ -72,5 +72,11 @@
     "break_duration_placeholder": "Vnesite trajanje odmora...",
     "previous_step": "Prejšnji korak",
     "next_step": "Naslednji korak"
+  },
+  "LanguageSwitcher": {
+    "languages": "Jeziki",
+    "slovene": "Slovenščina",
+    "english": "Angleščina",
+    "german": "Nemščina"
   }
 }

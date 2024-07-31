@@ -72,5 +72,11 @@
     "break_duration_placeholder": "Enter break duration...",
     "previous_step": "Previous step",
     "next_step": "Next step"
+  },
+  "LanguageSwitcher": {
+    "languages": "Languages",
+    "slovene": "Slovene",
+    "english": "English",
+    "german": "German"
   }
 }
