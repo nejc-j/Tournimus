@@ -12,5 +12,65 @@
   },
   "SearchBar": {
     "tournament_search": "Turniere suchen..."
+  },
+  "AuthButton": {
+    "sign_in": "Anmelden",
+    "sign_out": "Abmelden"
+  },
+  "Dashboard": {
+    "login_prompt": "Bitte melden Sie sich an, um auf das Dashboard zuzugreifen",
+    "dashboard_welcome": "Willkommen",
+    "your_tournaments": "Ihre Turniere",
+    "button_create_tournament": "Erstellen Sie ein neues Turnier"
+  },
+  "SignInOutButton": {
+    "sign_in": "Anmelden",
+    "sign_out": "Abmelden"
+  },
+  "TournamentList": {
+    "no_tournaments": "Keine Turniere gefunden"
+  },
+  "CreateTournament": {
+    "create_tournament": "Erstelle ein neues Turnier",
+    "basic_information": "Allgemeine Informationen",
+    "participants": "Teilnehmer",
+    "location_time_extra": "Ort · Zeit · Zusätzliche Einstellungen"
+  },
+  "GeneralInfoForm": {
+    "tournament_name": "Turniername",
+    "presenter": "Moderator",
+    "previous_step": "Vorheriger Schritt",
+    "next_step": "Nächster Schritt"
+  },
+  "ParticipantsForm": {
+    "number_of_participants": "Nr.",
+    "participant": "Teilnehmer",
+    "actions": "Aktionen",
+    "participant_placeholder": "Name des Teilnehmers eingeben",
+    "participant_add": "Teilnehmer hinzufügen",
+    "previous_step": "Vorheriger Schritt",
+    "next_step": "Nächster Schritt"
+  },
+  "LocationTimeForm": {
+    "location_name": "Standortnamen",
+    "location_placeholder": "Geben Sie den Standortnamen ein...",
+    "street_number": "Straße und Nummer",
+    "street_placeholder": "Geben Sie Straße und Hausnummer ein...",
+    "city": "Stadt",
+    "city_placeholder": "Stadt betreten...",
+    "zip_code": "PLZ",
+    "zip_placeholder": "Bitte Postleitzahl eingeben...",
+    "number_courts": "Anzahl der Gerichte",
+    "start_time": "Startzeit",
+    "date": "Suche dir einen Termin aus",
+    "hour": "Stunde",
+    "minute": "Minute",
+    "select_d_t": "Wählen Sie das Startdatum und die Startzeit für die Veranstaltung aus.",
+    "match_duration": "Spieldauer (Minuten)",
+    "match_duration_placeholder": "Spieldauer eingeben...",
+    "break_duration": "Pausendauer (Minuten)",
+    "break_duration_placeholder": "Pausendauer eingeben...",
+    "previous_step": "Vorheriger Schritt",
+    "next_step": "Nächster Schritt"
   }
 }

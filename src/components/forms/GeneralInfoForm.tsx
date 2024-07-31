@@ -5,6 +5,7 @@
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 import { z } from 'zod';
 import { GeneralInfoSchema } from '@/schemas';
 import { useFormStore } from '@/store';
@@ -23,6 +24,7 @@ import { useStepper } from '../ui/stepper';
 type GeneralInfoData = z.infer<typeof GeneralInfoSchema>;
 
 export default function GeneralInfoForm() {
+  const t = useTranslations('GeneralInfoForm');
   const { formData, updateGeneralInfo } = useFormStore();
   const { nextStep, prevStep, isDisabledStep } = useStepper();
 
@@ -50,7 +52,7 @@ export default function GeneralInfoForm() {
           name="tournamentName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tournament name</FormLabel>
+              <FormLabel>{t('tournament_name')}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -63,7 +65,7 @@ export default function GeneralInfoForm() {
           name="presenter"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Presenter</FormLabel>
+              <FormLabel>{t('presenter')}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -78,10 +80,10 @@ export default function GeneralInfoForm() {
             size="sm"
             variant="outline"
           >
-            Prejšnji korak
+            {t('previous_step')}
           </Button>
           <Button onClick={handleSubmit} size="sm">
-            Naslednji korak
+            {t('next_step')}
           </Button>
         </div>
       </form>

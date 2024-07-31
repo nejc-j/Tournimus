@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { PlusCircle, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import {
   Table,
@@ -18,6 +19,8 @@ import { useStepper } from '../ui/stepper';
 import { useFormStore } from '../../store';
 
 function ParticipantsForm() {
+  const t = useTranslations('ParticipantsForm');
+
   // State to keep track of the number of participants
   const [participants, setParticipants] = useState([{ id: 1, name: '' }]);
   const { nextStep, prevStep, isDisabledStep } = useStepper();
@@ -71,9 +74,9 @@ function ParticipantsForm() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Št.</TableHead>
-            <TableHead>Udeleženec</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t('number_of_participants')}</TableHead>
+            <TableHead>{t('participant')}</TableHead>
+            <TableHead>{t('actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -87,7 +90,7 @@ function ParticipantsForm() {
                   htmlFor={`participant-${participant.id}`}
                   className="sr-only"
                 >
-                  Udeleženec
+                  {t('participant')}
                 </Label>
                 <Input
                   id={`participant-${participant.id}`}
@@ -95,7 +98,7 @@ function ParticipantsForm() {
                   onChange={(e) =>
                     handleParticipantChange(participant.id, e.target.value)
                   }
-                  placeholder="Enter participant's name"
+                  placeholder={t('participant_placeholder')}
                 />
               </TableCell>
               <TableCell className="w-[10px]">
@@ -117,7 +120,7 @@ function ParticipantsForm() {
         className="gap-1 bg-succes text-white hover:bg-succes/90 mt-4 mb-5 "
       >
         <PlusCircle className="h-3.5 w-3.5 " />
-        Dodaj udeleženca
+        {t('participant_add')}
       </Button>
       <div className="w-full flex justify-end gap-2 pt-4">
         <Button
@@ -126,10 +129,10 @@ function ParticipantsForm() {
           size="sm"
           variant="outline"
         >
-          Prejšnji korak
+          {t('previous_step')}
         </Button>
         <Button onClick={saveParticipants} size="sm">
-          Naslednji korak
+          {t('next_step')}
         </Button>
       </div>
     </>
