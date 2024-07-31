@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { CalendarIcon, Clock } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { format } from 'date-fns';
 import { z } from 'zod';
 import { LocationTimeSchema } from '@/schemas';
@@ -36,6 +37,7 @@ import { createTournament } from '../../app/actions/tournamentActions';
 type LocationTimeData = z.infer<typeof LocationTimeSchema>;
 
 export default function LocationTimeForm() {
+  const t = useTranslations('LocationTimeForm');
   const minuteRef = useRef<HTMLInputElement>(null);
   const hourRef = useRef<HTMLInputElement>(null);
   const [date, setDate] = useState<Date>();
@@ -88,9 +90,9 @@ export default function LocationTimeForm() {
           name="locationName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Location Name</FormLabel>
+              <FormLabel>{t('location_name')}</FormLabel>
               <FormControl>
-                <Input placeholder="Enter location name..." {...field} />
+                <Input placeholder={t('location_placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,9 +103,9 @@ export default function LocationTimeForm() {
           name="street"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Street and Number</FormLabel>
+              <FormLabel>{t('street_number')}</FormLabel>
               <FormControl>
-                <Input placeholder="Enter street and number..." {...field} />
+                <Input placeholder={t('street_placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -114,9 +116,9 @@ export default function LocationTimeForm() {
           name="city"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>City</FormLabel>
+              <FormLabel>{t('city')}</FormLabel>
               <FormControl>
-                <Input placeholder="Enter city..." {...field} />
+                <Input placeholder={t('city_placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -127,9 +129,9 @@ export default function LocationTimeForm() {
           name="zipCode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Zip Code</FormLabel>
+              <FormLabel>{t('zip_code')}</FormLabel>
               <FormControl>
-                <Input placeholder="Enter zip code..." {...field} />
+                <Input placeholder={t('zip_placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -140,7 +142,7 @@ export default function LocationTimeForm() {
           name="numberOfCourts"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Number of Courts</FormLabel>
+              <FormLabel>{t('number_courts')}</FormLabel>
               <FormControl>
                 <Input type="number" {...field} />
               </FormControl>
@@ -153,7 +155,7 @@ export default function LocationTimeForm() {
           name="startTime"
           render={({ field }) => (
             <FormItem className="flex flex-col justify-center">
-              <FormLabel>Start Time</FormLabel>
+              <FormLabel>{t('start_time')}</FormLabel>
               <div className="flex flex-col gap-4 ">
                 <Popover>
                   <PopoverTrigger asChild>
@@ -168,7 +170,7 @@ export default function LocationTimeForm() {
                         {field.value ? (
                           format(field.value, 'PPP')
                         ) : (
-                          <span>Pick a date</span>
+                          <span>{t('date')}</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -186,7 +188,7 @@ export default function LocationTimeForm() {
                 <div className=" gap-2 text-center flex items-center">
                   <div className="flex flex-col gap-1">
                     <Label htmlFor="hours" className="text-xs">
-                      Ura
+                      {t('hour')}
                     </Label>
                     <TimePickerInput
                       picker="hours"
@@ -198,7 +200,7 @@ export default function LocationTimeForm() {
                   </div>
                   <div className="flex flex-col  gap-1">
                     <Label htmlFor="minutes" className="text-xs">
-                      Minuta
+                      {t('minute')}
                     </Label>
 
                     <TimePickerInput
@@ -212,9 +214,7 @@ export default function LocationTimeForm() {
                   <Clock className="ml-2 h-4 w-4 opacity-50 mt-4" />
                 </div>
               </div>
-              <FormDescription>
-                Select the start date and time for the event.
-              </FormDescription>
+              <FormDescription>{t('select_d_t')}</FormDescription>
 
               <FormMessage />
             </FormItem>
@@ -225,11 +225,11 @@ export default function LocationTimeForm() {
           name="matchDuration"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Match Duration (minutes)</FormLabel>
+              <FormLabel>{t('match_duration')}</FormLabel>
               <FormControl>
                 <Input
                   type="number"
-                  placeholder="Enter match duration..."
+                  placeholder={t('match_duration_placeholder')}
                   {...field}
                 />
               </FormControl>
@@ -242,11 +242,11 @@ export default function LocationTimeForm() {
           name="breakDuration"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Break Duration (minutes)</FormLabel>
+              <FormLabel>{t('break_duration')}</FormLabel>
               <FormControl>
                 <Input
                   type="number"
-                  placeholder="Enter break duration..."
+                  placeholder={t('break_duration_placeholder')}
                   {...field}
                 />
               </FormControl>
@@ -261,10 +261,10 @@ export default function LocationTimeForm() {
             size="sm"
             variant="outline"
           >
-            Prejšnji korak
+            {t('previous_step')}
           </Button>
           <Button type="submit" size="sm">
-            Ustvari turnir
+            {t('next_step')}
           </Button>
         </div>
       </form>

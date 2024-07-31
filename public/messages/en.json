@@ -12,5 +12,65 @@
   },
   "SearchBar": {
     "tournament_search": "Search tournaments..."
+  },
+  "AuthButton": {
+    "sign_in": "Sign in",
+    "sign_out": "Sign out"
+  },
+  "Dashboard": {
+    "login_prompt": "Please log in to access the dashboard",
+    "dashboard_welcome": "Welcome",
+    "your_tournaments": "Your tournaments",
+    "button_create_tournament": "Create a new tournament"
+  },
+  "SignInOutButton": {
+    "sign_in": "Sign in",
+    "sign_out": "Sign out"
+  },
+  "TournamentList": {
+    "no_tournaments": "No tournaments found"
+  },
+  "CreateTournament": {
+    "create_tournament": "Create a new tournament",
+    "basic_information": "General information",
+    "participants": "Participants",
+    "location_time_extra": "Location · Time · Additional Settings"
+  },
+  "GeneralInfoForm": {
+    "tournament_name": "Tournament name",
+    "presenter": "Presenter",
+    "previous_step": "Previous step",
+    "next_step": "Next step"
+  },
+  "ParticipantsForm": {
+    "number_of_participants": "No.",
+    "participant": "Participant",
+    "actions": "Actions",
+    "participant_placeholder": "Enter the name of the participant",
+    "participant_add": "Add participant",
+    "previous_step": "Previous step",
+    "next_step": "Next step"
+  },
+  "LocationTimeForm": {
+    "location_name": "Location Name",
+    "location_placeholder": "Enter location name...",
+    "street_number": "Street and Number",
+    "street_placeholder": "Enter street and number...",
+    "city": "City",
+    "city_placeholder": "Enter city...",
+    "zip_code": "Zip Code",
+    "zip_placeholder": "Enter zip code...",
+    "number_courts": "Number of Courts",
+    "start_time": "Start Time",
+    "date": "Pick a date",
+    "hour": "Hour",
+    "minute": "Minute",
+    "select_d_t": "Select the start date and time for the event.",
+    "match_duration": "Match Duration (minutes)",
+    "match_duration_placeholder": "Enter match duration...",
+    "break_duration": "Break Duration (minutes)",
+    "break_duration_placeholder": "Enter break duration...",
+    "previous_step": "Previous step",
+    "next_step": "Next step"
   }
 }

@@ -1,7 +1,6 @@
-// Dashboard.tsx
-
 import React from 'react';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { auth } from '@/auth';
 import { prisma } from '../../../lib/prisma';
 import { Button } from '@/components/ui/button';
@@ -10,14 +9,13 @@ import TournamentList from '@/components/TournamentList';
 import { Tournament } from '@/types';
 
 export default async function Dashboard() {
+  const t = await getTranslations('Dashboard');
   const session = await auth();
 
   if (!session?.user) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold mb-5">
-          Please log in to access the dashboard
-        </h1>
+        <h1 className="text-3xl font-bold mb-5">{t('login_prompt')}</h1>
         <SignInOutButton isSignedIn={false} />
       </main>
     );
@@ -67,16 +65,16 @@ export default async function Dashboard() {
       <div className="w-full max-w-6xl">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold text-white">
-            Welcome {user.name} 👋
+            {t('dashboard_welcome')} {user.name} 👋
           </h1>
           <Link href="/create-tournament">
-            <Button>Ustvari nov turnir</Button>
+            <Button>{t('button_create_tournament')}</Button>{' '}
           </Link>
         </div>
         <div className="border-b-2 border-tertiary my-4 mb-10" />
         <div className="w-full">
           <h2 className="text-2xl font-semibold text-white mb-5">
-            Your tournaments
+            {t('your_tournaments')}
           </h2>
           <TournamentList tournaments={transformedTournaments} />
         </div>

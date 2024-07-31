@@ -12,5 +12,65 @@
   },
   "SearchBar": {
     "tournament_search": "Išči turnirje..."
+  },
+  "AuthButton": {
+    "sign_in": "Prijava",
+    "sign_out": "Odjava"
+  },
+  "Dashboard": {
+    "login_prompt": "Za dostop do nadzorne plošče se prijavite",
+    "dashboard_welcome": "Dobrodošli",
+    "your_tournaments": "Vaši turnirji",
+    "button_create_tournament": "Ustvari nov turnir"
+  },
+  "SignInOutButton": {
+    "sign_in": "Prijava",
+    "sign_out": "Odjava"
+  },
+  "TournamentList": {
+    "no_tournaments": "Ni turnirjev"
+  },
+  "CreateTournament": {
+    "create_tournament": "Ustvari nov turnir",
+    "basic_information": "Splošne informacije",
+    "participants": "Udeleženci",
+    "location_time_extra": "Lokacija · Čas · Dodatne Nastavitve"
+  },
+  "GeneralInfoForm": {
+    "tournament_name": "Ime turnirja",
+    "presenter": "Voditelj",
+    "previous_step": "Prejšnji korak",
+    "next_step": "Naslednji korak"
+  },
+  "ParticipantsForm": {
+    "number_of_participants": "Št.",
+    "participant": "Udeleženec",
+    "actions": "Dejanja",
+    "participant_placeholder": "Vnesi ime udeleženca",
+    "participant_add": "Dodaj udeleženca",
+    "previous_step": "Prejšnji korak",
+    "next_step": "Naslednji korak"
+  },
+  "LocationTimeForm": {
+    "location_name": "Ime lokacije",
+    "location_placeholder": "Vnesite ime lokacije...",
+    "street_number": "Ulica in številka",
+    "street_placeholder": "Vnesite ulico in številko...",
+    "city": "Mesto",
+    "city_placeholder": "Vnesite mesto...",
+    "zip_code": "Poštna številka",
+    "zip_placeholder": "Vnesite poštno številko...",
+    "number_courts": "Število igrišč",
+    "start_time": "Začetni čas",
+    "date": "Izberite datum",
+    "hour": "Ura",
+    "minute": "Minuta",
+    "select_d_t": "Izberite začetni datum in čas dogodka.",
+    "match_duration": "Trajanje tekme (minute)",
+    "match_duration_placeholder": "Vnesite trajanje tekme...",
+    "break_duration": "Trajanje odmora (minute)",
+    "break_duration_placeholder": "Vnesite trajanje odmora...",
+    "previous_step": "Prejšnji korak",
+    "next_step": "Naslednji korak"
   }
 }

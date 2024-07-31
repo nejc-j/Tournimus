@@ -1,9 +1,8 @@
-// StepperDemo.tsx
-
 'use client';
 
 import React from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { Step, Stepper } from '@/components/ui/stepper';
 
 import { Card } from '@/components/ui/card';
@@ -11,11 +10,6 @@ import GeneralInfoForm from '../../components/forms/GeneralInfoForm';
 import ParticipantsForm from '../../components/forms/ParticipantsForm';
 import LocationTimeForm from '../../components/forms/LocationTimeForm';
 
-const steps = [
-  { label: 'Splošne informacije' },
-  { label: 'Udeleženci' },
-  { label: 'Lokacija, Čas, Dodatne Nastavitve' },
-];
 interface StepContentProps {
   step: number; // Define the type for the `step` prop
 }
@@ -34,6 +28,12 @@ function StepContent({ step }: StepContentProps) {
 }
 
 export default function StepperDemo() {
+  const t = useTranslations('CreateTournament');
+  const steps = [
+    { label: t('basic_information') },
+    { label: t('participants') },
+    { label: t('location_time_extra') },
+  ];
   return (
     <div className="relative w-full h-full min-h-screen">
       <Image
@@ -45,7 +45,7 @@ export default function StepperDemo() {
       />
       <div className="absolute inset-0 flex w-full gap-4 mt-20 max-w-6xl mx-auto p-4 flex-col">
         <h1 className="text-white text-center text-4xl font-semibold pb-4">
-          Ustvari turnir
+          {t('create_tournament')}
         </h1>
         <Card className="bg-primary/60 backdrop-blur-md p-6 text-white border-tertiary/50 ">
           <Stepper initialStep={0} steps={steps} className="ps-0 pb-4">

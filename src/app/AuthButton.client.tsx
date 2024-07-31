@@ -3,10 +3,12 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { User } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button'; // Adjust the import path based on your project structure
 import { signIn, signOut } from '@/auth/helpers';
 
 export default function AuthButton() {
+  const t = useTranslations('AuthButton');
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -29,7 +31,7 @@ export default function AuthButton() {
         variant="borderDestructive" // Use the variant prop to apply the appropriate styles
         size="default" // Use the size prop to apply the appropriate size
       >
-        Sign Out
+        {t('sign_out')}
       </Button>
     </>
   ) : (
@@ -38,7 +40,7 @@ export default function AuthButton() {
       variant="outline" // Use the variant prop to apply the appropriate styles
       size="default" // Use the size prop to apply the appropriate size
     >
-      Sign In
+      {t('sign_in')}
     </Button>
   );
 }

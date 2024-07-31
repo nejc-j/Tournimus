@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { Tournament } from '@prisma/client';
 import TournamentCard from './TournamentCard';
 
@@ -7,10 +8,11 @@ interface TournamentListProps {
 }
 
 function TournamentList({ tournaments }: TournamentListProps) {
+  const t = useTranslations('TournamentList');
   return (
     <div>
       {tournaments && tournaments.length === 0 ? (
-        <p className="text-left text-gray-500">No tournaments found</p>
+        <p className="text-left text-gray-500"> {t('no_tournaments')}</p>
       ) : (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {tournaments?.map((tournament) => (

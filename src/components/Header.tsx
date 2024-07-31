@@ -1,11 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 import AuthButton from '../app/AuthButton.server';
 
 function Header() {
-  const t = useTranslations('Header');
   return (
     <div className="w-full bg-primary bg-opacity-70 backdrop-blur-md top-0 left-0 right-0 z-50 drop-shadow-md fixed">
       <div className="max-w-6xl mx-auto flex justify-between items-center px-4 py-[15px]">
