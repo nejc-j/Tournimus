@@ -264,7 +264,7 @@ export default function LocationTimeForm() {
             {t('previous_step')}
           </Button>
           <Button type="submit" size="sm">
-            {t('next_step')}
+            {t('last_step')}
           </Button>
         </div>
       </form>

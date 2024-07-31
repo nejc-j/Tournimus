@@ -71,7 +71,7 @@
     "break_duration": "Trajanje odmora (minute)",
     "break_duration_placeholder": "Vnesite trajanje odmora...",
     "previous_step": "Prejšnji korak",
-    "next_step": "Naslednji korak"
+    "last_step": "Ustvari turnir"
   },
   "LanguageSwitcher": {
     "languages": "Jeziki",
