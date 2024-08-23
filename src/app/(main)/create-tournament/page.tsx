@@ -6,9 +6,9 @@ import { useTranslations } from 'next-intl';
 import { Step, Stepper } from '@/components/ui/stepper';
 
 import { Card } from '@/components/ui/card';
-import GeneralInfoForm from '../../components/forms/GeneralInfoForm';
-import ParticipantsForm from '../../components/forms/ParticipantsForm';
-import LocationTimeForm from '../../components/forms/LocationTimeForm';
+import GeneralInfoForm from '../../../components/forms/GeneralInfoForm';
+import ParticipantsForm from '../../../components/forms/ParticipantsForm';
+import LocationTimeForm from '../../../components/forms/LocationTimeForm';
 
 interface StepContentProps {
   step: number; // Define the type for the `step` prop

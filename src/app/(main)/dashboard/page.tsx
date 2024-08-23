@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import { Tournament } from '@prisma/client';
 import { auth } from '@/auth';
-import { prisma } from '../../../lib/prisma';
+import { prisma } from '../../../../lib/prisma';
 import { Button } from '@/components/ui/button';
 import SignInOutButton from './SignInOutButton';
 import TournamentList from '@/components/TournamentList';
-import { Tournament } from '@/types';
 
 export default async function Dashboard() {
   const t = await getTranslations('Dashboard');

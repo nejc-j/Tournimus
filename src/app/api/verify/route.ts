@@ -37,9 +37,13 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error('Error in verification route:', error);
 
-    // Capture the error message and stack trace
-    const errorMessage = error.message || 'An unexpected error occurred';
-    const errorStack = error.stack || '';
+    let errorMessage = 'An unexpected error occurred';
+    let errorStack = '';
+
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      errorStack = error.stack || '';
+    }
 
     return NextResponse.json(
       {

@@ -2,11 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
-import { PrismaClient } from '@prisma/client';
-import TournamentList from '../components/TournamentList';
-import { Button } from '../components/ui/button';
-import SearchBar from '../components/ui/searchbar';
-import { Tournament } from '../types';
+import { PrismaClient, Tournament } from '@prisma/client';
+import TournamentList from '../../components/TournamentList';
+import { Button } from '../../components/ui/button';
+import SearchBar from '../../components/ui/searchbar';
 
 const prisma = new PrismaClient();
 
@@ -56,7 +55,7 @@ async function Home({ searchParams }: HomeProps) {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-0 m-0">
-      <div className="relative w-full h-[300px] md:h-[500px] top-0 left-0">
+      <div className="relative w-full h-[500px] md:h-[500px] top-0 left-0">
         <Image
           src="/background-stadium.png"
           alt="Background Image"
