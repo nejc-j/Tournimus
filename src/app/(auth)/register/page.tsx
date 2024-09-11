@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import ClipLoader from 'react-spinners/ClipLoader';
+import { FcGoogle } from 'react-icons/fc';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -134,6 +135,7 @@ export default function SignUp() {
                 </Button>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <Button variant="outline" className="w-full" disabled={loading}>
+                  <FcGoogle className="mx-2" />
                   Login with Google
                 </Button>
                 <div className="mt-4 text-center text-sm">

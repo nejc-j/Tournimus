@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     });
 
     // Correct the redirect URL if necessary
-    return NextResponse.redirect(`${baseUrl}/api/auth/signin`);
+    return NextResponse.redirect(`${baseUrl}/login`);
   } catch (error) {
     console.error('Error in verification route:', error);
 

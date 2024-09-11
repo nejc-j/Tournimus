@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button'; // Adjust the import path based on your project structure
-import { signIn, signOut } from '@/auth/helpers';
+import { signOut } from '@/auth/helpers';
 
 export default function AuthButton() {
   const t = useTranslations('AuthButton');

@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { FcGoogle } from 'react-icons/fc';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -21,6 +22,8 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/'; // Default to home page if no callbackUrl
 
   // Handle form submission for credentials login
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,16 +36,21 @@ export default function LoginForm() {
     });
 
     if (res?.error) {
-      setError('Invalid credentials, please try again.');
+      // Check for specific error messages
+      if (res.error.includes('Please')) {
+        setError('Please verify your email before logging in.');
+      } else {
+        setError('Invalid credentials, please try again.');
+      }
     } else if (res?.ok) {
-      // Redirect to dashboard on successful login
-      router.push('/dashboard');
+      // Redirect to the previous page after successful login
+      router.push(callbackUrl);
     }
   };
 
   // Handle Google login
   const handleGoogleLogin = async () => {
-    await signIn('google');
+    await signIn('google', { callbackUrl });
   };
 
   return (
@@ -105,6 +113,7 @@ export default function LoginForm() {
               className="w-full"
               onClick={handleGoogleLogin}
             >
+              <FcGoogle className="mx-2" />
               Login with Google
             </Button>
           </form>
