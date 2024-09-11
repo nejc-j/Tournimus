@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../../../../lib/prisma';
+import { getBaseUrl } from '../../../utils/getBaseUrl';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get('token');
+  const baseUrl = getBaseUrl();
 
   if (!token) {
     return NextResponse.json(
@@ -33,7 +35,7 @@ export async function GET(request: Request) {
     });
 
     // Correct the redirect URL if necessary
-    return NextResponse.redirect('http://localhost:3000/api/auth/signin');
+    return NextResponse.redirect(`${baseUrl}/api/auth/signin`);
   } catch (error) {
     console.error('Error in verification route:', error);
 
