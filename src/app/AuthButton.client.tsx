@@ -36,7 +36,7 @@ export default function AuthButton() {
     </>
   ) : (
     <Button
-      onClick={async () => signIn()}
+      onClick={() => router.push('/login')} // Direct to the custom login page
       variant="outline" // Use the variant prop to apply the appropriate styles
       size="default" // Use the size prop to apply the appropriate size
     >
