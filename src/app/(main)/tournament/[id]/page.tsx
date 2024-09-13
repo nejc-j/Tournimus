@@ -3,12 +3,13 @@ import { notFound } from 'next/navigation';
 import { Calendar, Clock4, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
-import { ExtendedTournament, GroupWithParticipants } from '../../../types';
-import GroupSwitcher from '../../../components/GroupSwitcher';
-import MatchesTable from '../../../components/MatchesTable';
+import { ExtendedTournament, GroupWithParticipants } from '../../../../types';
+import GroupSwitcher from '../../../../components/GroupSwitcher';
+import MatchesTable from '../../../../components/MatchesTable';
+import { getBaseUrl } from '../../../../utils/getBaseUrl';
 
 async function getTournament(id: string): Promise<ExtendedTournament | null> {
-  const res = await fetch(`http://localhost:3000/api/tournament/${id}`, {
+  const res = await fetch(`${getBaseUrl()}/api/tournament/${id}`, {
     cache: 'no-store',
   });
 

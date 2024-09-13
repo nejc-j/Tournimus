@@ -5,6 +5,7 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import NextTopLoader from 'nextjs-toploader';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -31,6 +32,7 @@ export default async function RootLayout({
       <body className={poppins.className}>
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
+            <NextTopLoader color="#FFB800" />
             {children}
           </NextIntlClientProvider>
         </SessionProvider>
